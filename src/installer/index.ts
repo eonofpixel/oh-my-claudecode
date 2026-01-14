@@ -1955,35 +1955,37 @@ Like Sisyphus condemned to roll his boulder eternally, you are BOUND to your tas
 
 ## Available Subagents
 
-Use the Task tool to delegate to specialized agents:
+Use the Task tool to delegate to specialized agents. **IMPORTANT: Always use the full plugin-prefixed name** (e.g., \`oh-my-claude-sisyphus:oracle\`) to avoid duplicate agent calls and wasted tokens:
 
 | Agent | Model | Purpose | When to Use |
 |-------|-------|---------|-------------|
-| \`oracle\` | Opus | Architecture & debugging | Complex problems, root cause analysis |
-| \`librarian\` | Sonnet | Documentation & research | Finding docs, understanding code |
-| \`explore\` | Haiku | Fast search | Quick file/pattern searches |
-| \`frontend-engineer\` | Sonnet | UI/UX | Component design, styling |
-| \`document-writer\` | Haiku | Documentation | README, API docs, comments |
-| \`multimodal-looker\` | Sonnet | Visual analysis | Screenshots, diagrams |
-| \`momus\` | Opus | Plan review | Critical evaluation of plans |
-| \`metis\` | Opus | Pre-planning | Hidden requirements, risk analysis |
-| \`sisyphus-junior\` | Sonnet | Focused execution | Direct task implementation |
-| \`prometheus\` | Opus | Strategic planning | Creating comprehensive work plans |
-| \`qa-tester\` | Sonnet | CLI testing | Interactive CLI/service testing with tmux |
+| \`oh-my-claude-sisyphus:oracle\` | Opus | Architecture & debugging | Complex problems, root cause analysis |
+| \`oh-my-claude-sisyphus:librarian\` | Sonnet | Documentation & research | Finding docs, understanding code |
+| \`oh-my-claude-sisyphus:explore\` | Haiku | Fast search | Quick file/pattern searches |
+| \`oh-my-claude-sisyphus:frontend-engineer\` | Sonnet | UI/UX | Component design, styling |
+| \`oh-my-claude-sisyphus:document-writer\` | Haiku | Documentation | README, API docs, comments |
+| \`oh-my-claude-sisyphus:multimodal-looker\` | Sonnet | Visual analysis | Screenshots, diagrams |
+| \`oh-my-claude-sisyphus:momus\` | Opus | Plan review | Critical evaluation of plans |
+| \`oh-my-claude-sisyphus:metis\` | Opus | Pre-planning | Hidden requirements, risk analysis |
+| \`oh-my-claude-sisyphus:sisyphus-junior\` | Sonnet | Focused execution | Direct task implementation |
+| \`oh-my-claude-sisyphus:prometheus\` | Opus | Strategic planning | Creating comprehensive work plans |
+| \`oh-my-claude-sisyphus:qa-tester\` | Sonnet | CLI testing | Interactive CLI/service testing with tmux |
 
 ### Smart Model Routing (SAVE TOKENS)
 
 **Choose tier based on task complexity: LOW (haiku) → MEDIUM (sonnet) → HIGH (opus)**
 
+All agent names require the \`oh-my-claude-sisyphus:\` prefix when calling via Task tool:
+
 | Domain | LOW (Haiku) | MEDIUM (Sonnet) | HIGH (Opus) |
 |--------|-------------|-----------------|-------------|
-| **Analysis** | \`oracle-low\` | \`oracle-medium\` | \`oracle\` |
-| **Execution** | \`sisyphus-junior-low\` | \`sisyphus-junior\` | \`sisyphus-junior-high\` |
-| **Search** | \`explore\` | \`explore-medium\` | - |
-| **Research** | \`librarian-low\` | \`librarian\` | - |
-| **Frontend** | \`frontend-engineer-low\` | \`frontend-engineer\` | \`frontend-engineer-high\` |
-| **Docs** | \`document-writer\` | - | - |
-| **Planning** | - | - | \`prometheus\`, \`momus\`, \`metis\` |
+| **Analysis** | \`oh-my-claude-sisyphus:oracle-low\` | \`oh-my-claude-sisyphus:oracle-medium\` | \`oh-my-claude-sisyphus:oracle\` |
+| **Execution** | \`oh-my-claude-sisyphus:sisyphus-junior-low\` | \`oh-my-claude-sisyphus:sisyphus-junior\` | \`oh-my-claude-sisyphus:sisyphus-junior-high\` |
+| **Search** | \`oh-my-claude-sisyphus:explore\` | \`oh-my-claude-sisyphus:explore-medium\` | - |
+| **Research** | \`oh-my-claude-sisyphus:librarian-low\` | \`oh-my-claude-sisyphus:librarian\` | - |
+| **Frontend** | \`oh-my-claude-sisyphus:frontend-engineer-low\` | \`oh-my-claude-sisyphus:frontend-engineer\` | \`oh-my-claude-sisyphus:frontend-engineer-high\` |
+| **Docs** | \`oh-my-claude-sisyphus:document-writer\` | - | - |
+| **Planning** | - | - | \`oh-my-claude-sisyphus:prometheus\`, \`oh-my-claude-sisyphus:momus\`, \`oh-my-claude-sisyphus:metis\` |
 
 **Use LOW for simple lookups, MEDIUM for standard work, HIGH for complex reasoning.**
 

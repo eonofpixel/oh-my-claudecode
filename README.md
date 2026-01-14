@@ -125,11 +125,21 @@ Without `/sisyphus-default`, Claude operates with basic capabilities. Running it
 4. ✅ Activates continuation enforcement (tasks complete before stopping)
 5. ✅ Sets up skill composition (sisyphus + ultrawork + git-master, etc.)
 
+> **WARNING: This command COMPLETELY OVERWRITES `~/.claude/CLAUDE.md`**
+>
+> Any custom content you've added to your global CLAUDE.md will be replaced. If you have customizations, back them up first:
+> ```bash
+> cp ~/.claude/CLAUDE.md ~/.claude/CLAUDE.md.backup
+> ```
+> After running `/sisyphus-default`, you can manually merge your custom content back.
+
 ### When to Run It
 
 - **First time**: Always run after installation
-- **After updates**: Run `/sisyphus-default` to get latest configuration
+- **After updates**: Run `/sisyphus-default` to get the latest configuration (required after each plugin update)
 - **Different machines**: Run on each machine where you use Claude Code
+
+> **NOTE**: After updating the plugin (via `npm update`, `git pull`, or Claude Code's plugin update), you MUST re-run `/sisyphus-default` to apply the latest CLAUDE.md changes. The plugin update does NOT automatically update your global CLAUDE.md.
 
 ---
 

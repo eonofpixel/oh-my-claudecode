@@ -68,6 +68,31 @@ ls ~/.claude/plugins/cache/oh-my-claude-sisyphus/oh-my-claude-sisyphus/ 2>/dev/n
 **Diagnosis**:
 - If > 1 version: WARN - multiple cached versions (cleanup recommended)
 
+### Step 6: Check for Legacy Curl-Installed Content
+
+Check for legacy agents, commands, and skills installed via curl (before plugin system):
+
+```bash
+# Check for legacy agents directory
+ls -la ~/.claude/agents/ 2>/dev/null
+
+# Check for legacy commands directory
+ls -la ~/.claude/commands/ 2>/dev/null
+
+# Check for legacy skills directory
+ls -la ~/.claude/skills/ 2>/dev/null
+```
+
+**Diagnosis**:
+- If `~/.claude/agents/` exists with sisyphus-related files: WARN - legacy agents (now provided by plugin)
+- If `~/.claude/commands/` exists with sisyphus-related files: WARN - legacy commands (now provided by plugin)
+- If `~/.claude/skills/` exists with sisyphus-related files: WARN - legacy skills (now provided by plugin)
+
+Look for files like:
+- `oracle.md`, `librarian.md`, `explore.md`, `sisyphus-junior.md`, etc. in agents/
+- `ultrawork.md`, `sisyphus-default.md`, `deepsearch.md`, etc. in commands/
+- Any sisyphus-related `.md` files in skills/
+
 ---
 
 ## Report Format
@@ -89,6 +114,9 @@ After running all checks, output a report:
 | Legacy Scripts (~/.claude/hooks/) | OK/WARN | ... |
 | CLAUDE.md | OK/WARN/CRITICAL | ... |
 | Plugin Cache | OK/WARN | ... |
+| Legacy Agents (~/.claude/agents/) | OK/WARN | ... |
+| Legacy Commands (~/.claude/commands/) | OK/WARN | ... |
+| Legacy Skills (~/.claude/skills/) | OK/WARN | ... |
 
 ### Issues Found
 1. [Issue description]
@@ -135,6 +163,24 @@ Fetch latest from GitHub and write to `~/.claude/CLAUDE.md`:
 ```
 WebFetch(url: "https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claude-sisyphus/main/docs/CLAUDE.md", prompt: "Return the complete raw markdown content exactly as-is")
 ```
+
+### Fix: Legacy Curl-Installed Content
+
+Remove legacy agents, commands, and skills directories (now provided by plugin):
+
+```bash
+# Backup first (optional - ask user)
+# mv ~/.claude/agents ~/.claude/agents.bak
+# mv ~/.claude/commands ~/.claude/commands.bak
+# mv ~/.claude/skills ~/.claude/skills.bak
+
+# Or remove directly
+rm -rf ~/.claude/agents
+rm -rf ~/.claude/commands
+rm -rf ~/.claude/skills
+```
+
+**Note**: Only remove if these contain sisyphus-related files. If user has custom agents/commands/skills, warn them and ask before removing.
 
 ---
 

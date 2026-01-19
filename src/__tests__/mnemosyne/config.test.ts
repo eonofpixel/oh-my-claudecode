@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { loadConfig, getConfigValue } from '../../hooks/learned-skills/config.js';
+import { loadConfig, getConfigValue } from '../../hooks/mnemosyne/config.js';
 
-describe('Claudeception Config', () => {
+describe('Mnemosyne Config', () => {
   it('should return defaults when no config exists', () => {
     const config = loadConfig();
 

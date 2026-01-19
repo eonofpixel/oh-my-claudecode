@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { mkdirSync, writeFileSync, rmSync } from 'fs';
 import { join } from 'path';
 import { tmpdir } from 'os';
-import { findSkillFiles, getSkillsDir, ensureSkillsDir } from '../../hooks/learned-skills/finder.js';
+import { findSkillFiles, getSkillsDir, ensureSkillsDir } from '../../hooks/mnemosyne/finder.js';
 
 describe('Skill Finder', () => {
   let testDir: string;

@@ -5,7 +5,7 @@
  */
 
 import { detectExtractableMoment, shouldPromptExtraction, generateExtractionPrompt } from './detector.js';
-import { isClaudeceptionEnabled } from './index.js';
+import { isMnemosyneEnabled } from './index.js';
 import type { DetectionResult } from './detector.js';
 
 /**
@@ -63,7 +63,7 @@ export function processResponseForDetection(
 ): string | null {
   const mergedConfig = { ...DEFAULT_CONFIG, ...config };
 
-  if (!mergedConfig.enabled || !isClaudeceptionEnabled()) {
+  if (!mergedConfig.enabled || !isMnemosyneEnabled()) {
     return null;
   }
 

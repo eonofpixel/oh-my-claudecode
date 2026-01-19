@@ -32,7 +32,7 @@ const sessionCaches = new Map<string, Set<string>>();
 /**
  * Check if feature is enabled.
  */
-export function isClaudeceptionEnabled(): boolean {
+export function isMnemosyneEnabled(): boolean {
   return loadConfig().enabled;
 }
 
@@ -43,7 +43,7 @@ function formatSkillsForContext(skills: LearnedSkill[]): string {
   if (skills.length === 0) return '';
 
   const lines = [
-    '<learned-skills>',
+    '<mnemosyne>',
     '',
     '## Relevant Learned Skills',
     '',
@@ -64,7 +64,7 @@ function formatSkillsForContext(skills: LearnedSkill[]): string {
     lines.push('');
   }
 
-  lines.push('</learned-skills>');
+  lines.push('</mnemosyne>');
   return lines.join('\n');
 }
 
@@ -76,7 +76,7 @@ export function processMessageForSkills(
   sessionId: string,
   projectRoot: string | null
 ): { injected: number; skills: LearnedSkill[] } {
-  if (!isClaudeceptionEnabled()) {
+  if (!isMnemosyneEnabled()) {
     return { injected: 0, skills: [] };
   }
 
@@ -102,8 +102,8 @@ export function processMessageForSkills(
   // Register with context collector
   const content = formatSkillsForContext(newSkills);
   contextCollector.register(sessionId, {
-    id: 'learned-skills',
-    source: 'learned-skills',
+    id: 'mnemosyne',
+    source: 'mnemosyne',
     content,
     priority: 'normal',
     metadata: {
@@ -156,6 +156,6 @@ export function createLearnedSkillsHook(projectRoot: string | null) {
     /**
      * Check if feature enabled.
      */
-    isEnabled: isClaudeceptionEnabled,
+    isEnabled: isMnemosyneEnabled,
   };
 }

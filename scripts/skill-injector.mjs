@@ -169,7 +169,7 @@ function findMatchingSkills(prompt, directory, sessionId) {
 // Format skills for injection
 function formatSkillsMessage(skills) {
   const lines = [
-    '<learned-skills>',
+    '<mnemosyne>',
     '',
     '## Relevant Learned Skills',
     '',
@@ -186,7 +186,7 @@ function formatSkillsMessage(skills) {
     lines.push('');
   }
 
-  lines.push('</learned-skills>');
+  lines.push('</mnemosyne>');
   return lines.join('\n');
 }
 

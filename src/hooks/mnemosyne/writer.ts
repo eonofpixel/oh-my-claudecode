@@ -119,7 +119,7 @@ ${request.solution}
     };
   } catch (e) {
     if (DEBUG_ENABLED) {
-      console.error('[learned-skills] Error writing skill file:', e);
+      console.error('[mnemosyne] Error writing skill file:', e);
     }
     return {
       success: false,

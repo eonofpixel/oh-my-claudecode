@@ -30,7 +30,7 @@ function findSkillFilesRecursive(dir: string, results: string[]): void {
   } catch (error) {
     // Permission denied or other errors - silently skip
     if (DEBUG_ENABLED) {
-      console.error('[learned-skills] Error scanning directory:', error);
+      console.error('[mnemosyne] Error scanning directory:', error);
     }
   }
 }
@@ -120,7 +120,7 @@ export function ensureSkillsDir(scope: 'user' | 'project', projectRoot?: string)
     return true;
   } catch (error) {
     if (DEBUG_ENABLED) {
-      console.error('[learned-skills] Error creating skills directory:', error);
+      console.error('[mnemosyne] Error creating skills directory:', error);
     }
     return false;
   }

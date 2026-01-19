@@ -15,7 +15,7 @@ export const PROJECT_SKILLS_SUBDIR = '.sisyphus/skills';
 export const SKILL_EXTENSION = '.md';
 
 /** Feature flag key for enabling/disabling */
-export const FEATURE_FLAG_KEY = 'claudeception.enabled';
+export const FEATURE_FLAG_KEY = 'mnemosyne.enabled';
 
 /** Default feature flag value */
 export const FEATURE_FLAG_DEFAULT = true;

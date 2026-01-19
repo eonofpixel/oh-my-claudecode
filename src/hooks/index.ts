@@ -494,10 +494,10 @@ export {
 } from './notepad/index.js';
 
 export {
-  // Learned Skills (Claudeception)
+  // Learned Skills (Mnemosyne)
   createLearnedSkillsHook,
   processMessageForSkills,
-  isClaudeceptionEnabled,
+  isMnemosyneEnabled,
   getAllSkills,
   clearSkillSession,
   findMatchingSkills,
@@ -522,10 +522,10 @@ export {
   getPromotionCandidates,
   promoteLearning,
   listPromotableLearnings,
-  loadConfig as loadClaudeceptionConfig,
-  saveConfig as saveClaudeceptionConfig,
-  getConfigValue as getClaudeceptionConfigValue,
-  setConfigValue as setClaudeceptionConfigValue,
+  loadConfig as loadMnemosyneConfig,
+  saveConfig as saveMnemosyneConfig,
+  getConfigValue as getMnemosyneConfigValue,
+  setConfigValue as setMnemosyneConfigValue,
   // Constants
   USER_SKILLS_DIR,
   PROJECT_SKILLS_SUBDIR,
@@ -545,7 +545,7 @@ export {
   type DetectionResult,
   type DetectionConfig,
   type PromotionCandidate,
-  type ClaudeceptionConfig,
+  type MnemosyneConfig,
   type WriteSkillResult,
   type SkillParseResult
-} from './learned-skills/index.js';
+} from './mnemosyne/index.js';

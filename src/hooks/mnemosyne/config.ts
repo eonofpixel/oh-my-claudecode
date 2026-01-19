@@ -1,5 +1,5 @@
 /**
- * Claudeception Configuration
+ * Mnemosyne Configuration
  *
  * Handles configuration loading and validation.
  */
@@ -9,7 +9,7 @@ import { join } from 'path';
 import { homedir } from 'os';
 import { DEBUG_ENABLED } from './constants.js';
 
-export interface ClaudeceptionConfig {
+export interface MnemosyneConfig {
   /** Feature enabled/disabled */
   enabled: boolean;
   /** Detection configuration */
@@ -41,7 +41,7 @@ export interface ClaudeceptionConfig {
   };
 }
 
-const DEFAULT_CONFIG: ClaudeceptionConfig = {
+const DEFAULT_CONFIG: MnemosyneConfig = {
   enabled: true,
   detection: {
     enabled: true,
@@ -60,12 +60,12 @@ const DEFAULT_CONFIG: ClaudeceptionConfig = {
   },
 };
 
-const CONFIG_PATH = join(homedir(), '.claude', 'sisyphus', 'claudeception.json');
+const CONFIG_PATH = join(homedir(), '.claude', 'sisyphus', 'mnemosyne.json');
 
 /**
  * Load configuration from disk.
  */
-export function loadConfig(): ClaudeceptionConfig {
+export function loadConfig(): MnemosyneConfig {
   if (!existsSync(CONFIG_PATH)) {
     return DEFAULT_CONFIG;
   }
@@ -76,7 +76,7 @@ export function loadConfig(): ClaudeceptionConfig {
     return mergeConfig(DEFAULT_CONFIG, loaded);
   } catch (error) {
     if (DEBUG_ENABLED) {
-      console.error('[learned-skills] Error loading config:', error);
+      console.error('[mnemosyne] Error loading config:', error);
     }
     return DEFAULT_CONFIG;
   }
@@ -85,7 +85,7 @@ export function loadConfig(): ClaudeceptionConfig {
 /**
  * Save configuration to disk.
  */
-export function saveConfig(config: Partial<ClaudeceptionConfig>): boolean {
+export function saveConfig(config: Partial<MnemosyneConfig>): boolean {
   const merged = mergeConfig(DEFAULT_CONFIG, config);
 
   try {
@@ -97,7 +97,7 @@ export function saveConfig(config: Partial<ClaudeceptionConfig>): boolean {
     return true;
   } catch (error) {
     if (DEBUG_ENABLED) {
-      console.error('[learned-skills] Error saving config:', error);
+      console.error('[mnemosyne] Error saving config:', error);
     }
     return false;
   }
@@ -107,9 +107,9 @@ export function saveConfig(config: Partial<ClaudeceptionConfig>): boolean {
  * Merge partial config with defaults.
  */
 function mergeConfig(
-  defaults: ClaudeceptionConfig,
-  partial: Partial<ClaudeceptionConfig>
-): ClaudeceptionConfig {
+  defaults: MnemosyneConfig,
+  partial: Partial<MnemosyneConfig>
+): MnemosyneConfig {
   return {
     enabled: partial.enabled ?? defaults.enabled,
     detection: {
@@ -130,9 +130,9 @@ function mergeConfig(
 /**
  * Get a specific config value.
  */
-export function getConfigValue<K extends keyof ClaudeceptionConfig>(
+export function getConfigValue<K extends keyof MnemosyneConfig>(
   key: K
-): ClaudeceptionConfig[K] {
+): MnemosyneConfig[K] {
   const config = loadConfig();
   return config[key];
 }
@@ -140,9 +140,9 @@ export function getConfigValue<K extends keyof ClaudeceptionConfig>(
 /**
  * Update a specific config value.
  */
-export function setConfigValue<K extends keyof ClaudeceptionConfig>(
+export function setConfigValue<K extends keyof MnemosyneConfig>(
   key: K,
-  value: ClaudeceptionConfig[K]
+  value: MnemosyneConfig[K]
 ): boolean {
   const config = loadConfig();
   config[key] = value;

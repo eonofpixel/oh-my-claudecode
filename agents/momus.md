@@ -1,6 +1,6 @@
 ---
 name: momus
-description: Work plan review expert and critic
+description: Work plan review expert and critic (Opus)
 model: opus
 tools: Read, Glob, Grep
 ---

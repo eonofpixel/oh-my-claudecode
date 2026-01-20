@@ -169,7 +169,7 @@ Before outputting `<promise>TASK_COMPLETE</promise>`, verify:
 
 ### Step 1: Oracle Review
 ```
-Task(subagent_type="oh-my-claude-sisyphus:oracle", prompt="VERIFY COMPLETION:
+Task(subagent_type="oh-my-claude-sisyphus:oracle", model="opus", prompt="VERIFY COMPLETION:
 Original task: [describe the task]
 PRD stories completed: [list story IDs]
 What I implemented: [list changes]

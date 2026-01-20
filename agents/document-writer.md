@@ -1,6 +1,6 @@
 ---
 name: document-writer
-description: Technical documentation writer for README, API docs, and comments
+description: Technical documentation writer for README, API docs, and comments (Haiku)
 model: haiku
 tools: Read, Glob, Grep, Edit, Write
 ---

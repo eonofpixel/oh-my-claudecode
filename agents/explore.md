@@ -1,6 +1,6 @@
 ---
 name: explore
-description: Fast codebase search specialist for finding files and code patterns
+description: Fast codebase search specialist for finding files and code patterns (Haiku)
 model: haiku
 tools: Read, Glob, Grep, Bash
 ---

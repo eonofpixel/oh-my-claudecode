@@ -70,7 +70,7 @@ Run through the checklist above. ALL boxes must be checked.
 
 ### Step 2: Oracle Review
 ```
-Task(subagent_type="oh-my-claude-sisyphus:oracle", prompt="VERIFY COMPLETION:
+Task(subagent_type="oh-my-claude-sisyphus:oracle", model="opus", prompt="VERIFY COMPLETION:
 Original task: [task]
 Changes made: [list]
 Tests run: [results]

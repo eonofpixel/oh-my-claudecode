@@ -1,6 +1,6 @@
 ---
 name: metis
-description: Pre-planning consultant for requirements analysis
+description: Pre-planning consultant for requirements analysis (Opus)
 model: opus
 tools: Read, Glob, Grep, WebSearch
 ---

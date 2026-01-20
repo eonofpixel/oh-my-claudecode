@@ -70,7 +70,7 @@ Run through the checklist above.
 
 ### Step 2: Oracle Review (Launch in Background)
 ```
-Task(subagent_type="oh-my-claude-sisyphus:oracle", run_in_background=true, prompt="VERIFY COMPLETION:
+Task(subagent_type="oh-my-claude-sisyphus:oracle", model="opus", run_in_background=true, prompt="VERIFY COMPLETION:
 Original task: [task]
 Changes made: [list]
 Please verify this is complete and production-ready.")

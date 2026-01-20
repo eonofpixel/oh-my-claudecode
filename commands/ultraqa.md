@@ -36,6 +36,13 @@ If no structured goal provided, interpret the argument as a custom goal.
    - `--lint`: Run `npm run lint` or equivalent
    - `--typecheck`: Run `npm run typecheck` or `tsc --noEmit`
    - `--custom`: Run appropriate command and check for pattern
+   - `--interactive`: Use qa-tester for interactive CLI/service testing:
+     ```
+     Task(subagent_type="oh-my-claude-sisyphus:qa-tester", model="sonnet", prompt="TEST:
+     Goal: [describe what to verify]
+     Service: [how to start]
+     Test cases: [specific scenarios to verify]")
+     ```
 
 2. **CHECK RESULT**: Did the goal pass?
    - **YES** → Exit with success message
@@ -43,15 +50,19 @@ If no structured goal provided, interpret the argument as a custom goal.
 
 3. **ORACLE DIAGNOSIS**: Spawn oracle to analyze failure
    ```
-   Task(subagent_type="oh-my-claude-sisyphus:oracle", prompt="DIAGNOSE FAILURE:
+   Task(subagent_type="oh-my-claude-sisyphus:oracle", model="opus", prompt="DIAGNOSE FAILURE:
    Goal: [goal type]
    Output: [test/build output]
    Provide root cause and specific fix recommendations.")
    ```
 
 4. **FIX ISSUES**: Apply oracle's recommendations
-   - Use sisyphus-junior for code changes
-   - Be specific and targeted
+   ```
+   Task(subagent_type="oh-my-claude-sisyphus:sisyphus-junior", model="sonnet", prompt="FIX:
+   Issue: [oracle diagnosis]
+   Files: [affected files]
+   Apply the fix precisely as recommended.")
+   ```
 
 5. **REPEAT**: Go back to step 1
 

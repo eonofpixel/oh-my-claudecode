@@ -100,7 +100,7 @@ Ralph-plan maintains state in `.sisyphus/ralph-plan-state.json`:
 Spawn Prometheus in **direct planning mode** (bypassing interview since task context is pre-gathered):
 
 ```
-Task(subagent_type="oh-my-claude-sisyphus:prometheus", prompt="
+Task(subagent_type="oh-my-claude-sisyphus:prometheus", model="opus", prompt="
 RALPH-PLAN DIRECT MODE - Create work plan immediately.
 
 TASK CONTEXT: [User's task description from $ARGUMENTS]
@@ -141,7 +141,7 @@ Oracle is invoked in TWO scenarios:
 When invoked, give Oracle **file paths to read**, not summaries:
 
 ```
-Task(subagent_type="oh-my-claude-sisyphus:oracle", prompt="
+Task(subagent_type="oh-my-claude-sisyphus:oracle", model="opus", prompt="
 RALPH-PLAN ORACLE CONSULTATION
 
 PLAN FILE: .sisyphus/plans/[filename].md
@@ -170,7 +170,7 @@ Update state: `current_phase: "oracle_consultation"`
 Momus receives only the file path (per its design):
 
 ```
-Task(subagent_type="oh-my-claude-sisyphus:momus", prompt="
+Task(subagent_type="oh-my-claude-sisyphus:momus", model="opus", prompt="
 .sisyphus/plans/[filename].md
 ")
 ```

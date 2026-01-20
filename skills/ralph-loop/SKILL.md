@@ -20,9 +20,9 @@ Before claiming completion, you MUST:
 ## ORACLE VERIFICATION (MANDATORY)
 
 When you believe the task is complete:
-1. **First**, spawn Oracle to verify your work:
+1. **First**, spawn Oracle to verify your work (ALWAYS pass model explicitly!):
    ```
-   Task(subagent_type="oracle", prompt="Verify this implementation is complete: [describe what you did]")
+   Task(subagent_type="oracle", model="opus", prompt="Verify this implementation is complete: [describe what you did]")
    ```
 
 2. **Wait for Oracle's assessment**

@@ -35,7 +35,7 @@ Use **parallel exploration** with the explore agent to analyze directories, then
 #### Phase 1: Discovery
 
 ```
-Task(subagent_type="oh-my-claude-sisyphus:explore", prompt="Map the directory structure of this codebase. List all directories recursively (excluding node_modules, .git, dist, build, __pycache__, .venv). Return as a tree structure.")
+Task(subagent_type="oh-my-claude-sisyphus:explore", model="haiku", prompt="Map the directory structure of this codebase. List all directories recursively (excluding node_modules, .git, dist, build, __pycache__, .venv). Return as a tree structure.")
 ```
 
 #### Phase 2: Hierarchical Generation

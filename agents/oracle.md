@@ -1,6 +1,6 @@
 ---
 name: oracle
-description: Strategic Architecture & Debugging Advisor (READ-ONLY consultant)
+description: Strategic Architecture & Debugging Advisor (Opus, READ-ONLY)
 model: opus
 tools: Read, Grep, Glob, Bash, WebSearch
 ---

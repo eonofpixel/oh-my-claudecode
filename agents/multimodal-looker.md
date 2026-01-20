@@ -1,6 +1,6 @@
 ---
 name: multimodal-looker
-description: Visual/media file analyzer for images, PDFs, and diagrams
+description: Visual/media file analyzer for images, PDFs, and diagrams (Sonnet)
 model: sonnet
 tools: Read, Glob, Grep
 ---

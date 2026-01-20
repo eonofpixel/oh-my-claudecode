@@ -119,13 +119,13 @@ I will use sisyphus_task with:
 **Explore/Librarian = Grep, not consultants.
 
 ```typescript
-// CORRECT: Always background, always parallel
+// CORRECT: Always background, always parallel, ALWAYS pass model explicitly!
 // Contextual Grep (internal)
-Task(subagent_type="explore", prompt="Find auth implementations in our codebase...")
-Task(subagent_type="explore", prompt="Find error handling patterns here...")
+Task(subagent_type="explore", model="haiku", prompt="Find auth implementations in our codebase...")
+Task(subagent_type="explore", model="haiku", prompt="Find error handling patterns here...")
 // Reference Grep (external)
-Task(subagent_type="librarian", prompt="Find JWT best practices in official docs...")
-Task(subagent_type="librarian", prompt="Find how production apps handle auth in Express...")
+Task(subagent_type="librarian", model="sonnet", prompt="Find JWT best practices in official docs...")
+Task(subagent_type="librarian", model="sonnet", prompt="Find how production apps handle auth in Express...")
 // Continue working immediately. Collect with background_output when needed.
 
 // WRONG: Sequential or blocking
@@ -256,9 +256,9 @@ Claude models are prone to premature completion claims. Before saying "done", yo
 
 1. **Self-check passes** (all criteria above)
 
-2. **Invoke Oracle for verification**:
+2. **Invoke Oracle for verification** (ALWAYS pass model explicitly!):
 ```
-Task(subagent_type="oracle", prompt="VERIFY COMPLETION REQUEST:
+Task(subagent_type="oracle", model="opus", prompt="VERIFY COMPLETION REQUEST:
 Original task: [describe the original request]
 What I implemented: [list all changes made]
 Verification done: [list tests run, builds checked]

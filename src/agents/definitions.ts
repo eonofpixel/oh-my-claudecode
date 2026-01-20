@@ -84,7 +84,7 @@ function loadAgentPrompt(agentName: string): string {
  */
 export const oracleMediumAgent: AgentConfig = {
   name: 'oracle-medium',
-  description: 'Architecture & Debugging Advisor - Medium complexity. Use for moderate analysis that doesn\'t require Opus-level reasoning.',
+  description: 'Architecture & Debugging Advisor - Medium complexity (Sonnet). Use for moderate analysis.',
   prompt: loadAgentPrompt('oracle-medium'),
   tools: ['Read', 'Glob', 'Grep', 'WebSearch', 'WebFetch'],
   model: 'sonnet'
@@ -95,7 +95,7 @@ export const oracleMediumAgent: AgentConfig = {
  */
 export const oracleLowAgent: AgentConfig = {
   name: 'oracle-low',
-  description: 'Quick code questions & simple lookups. Use for simple questions that need fast answers.',
+  description: 'Quick code questions & simple lookups (Haiku). Use for simple questions that need fast answers.',
   prompt: loadAgentPrompt('oracle-low'),
   tools: ['Read', 'Glob', 'Grep'],
   model: 'haiku'
@@ -106,7 +106,7 @@ export const oracleLowAgent: AgentConfig = {
  */
 export const sisyphusJuniorHighAgent: AgentConfig = {
   name: 'sisyphus-junior-high',
-  description: 'Complex task executor for multi-file changes. Use for tasks requiring deep reasoning.',
+  description: 'Complex task executor for multi-file changes (Opus). Use for tasks requiring deep reasoning.',
   prompt: loadAgentPrompt('sisyphus-junior-high'),
   tools: ['Read', 'Glob', 'Grep', 'Edit', 'Write', 'Bash', 'TodoWrite'],
   model: 'opus'
@@ -117,7 +117,7 @@ export const sisyphusJuniorHighAgent: AgentConfig = {
  */
 export const sisyphusJuniorLowAgent: AgentConfig = {
   name: 'sisyphus-junior-low',
-  description: 'Simple single-file task executor. Use for trivial tasks.',
+  description: 'Simple single-file task executor (Haiku). Use for trivial tasks.',
   prompt: loadAgentPrompt('sisyphus-junior-low'),
   tools: ['Read', 'Glob', 'Grep', 'Edit', 'Write', 'Bash', 'TodoWrite'],
   model: 'haiku'
@@ -128,7 +128,7 @@ export const sisyphusJuniorLowAgent: AgentConfig = {
  */
 export const librarianLowAgent: AgentConfig = {
   name: 'librarian-low',
-  description: 'Quick documentation lookups. Use for simple documentation queries.',
+  description: 'Quick documentation lookups (Haiku). Use for simple documentation queries.',
   prompt: loadAgentPrompt('librarian-low'),
   tools: ['Read', 'Glob', 'Grep', 'WebSearch', 'WebFetch'],
   model: 'haiku'
@@ -139,7 +139,7 @@ export const librarianLowAgent: AgentConfig = {
  */
 export const exploreMediumAgent: AgentConfig = {
   name: 'explore-medium',
-  description: 'Thorough codebase search with reasoning. Use when search requires more reasoning.',
+  description: 'Thorough codebase search with reasoning (Sonnet). Use when search requires more reasoning.',
   prompt: loadAgentPrompt('explore-medium'),
   tools: ['Read', 'Glob', 'Grep'],
   model: 'sonnet'
@@ -150,7 +150,7 @@ export const exploreMediumAgent: AgentConfig = {
  */
 export const frontendEngineerLowAgent: AgentConfig = {
   name: 'frontend-engineer-low',
-  description: 'Simple styling and minor UI tweaks. Use for trivial frontend work.',
+  description: 'Simple styling and minor UI tweaks (Haiku). Use for trivial frontend work.',
   prompt: loadAgentPrompt('frontend-engineer-low'),
   tools: ['Read', 'Glob', 'Grep', 'Edit', 'Write', 'Bash'],
   model: 'haiku'
@@ -161,7 +161,7 @@ export const frontendEngineerLowAgent: AgentConfig = {
  */
 export const frontendEngineerHighAgent: AgentConfig = {
   name: 'frontend-engineer-high',
-  description: 'Complex UI architecture and design systems. Use for sophisticated frontend work.',
+  description: 'Complex UI architecture and design systems (Opus). Use for sophisticated frontend work.',
   prompt: loadAgentPrompt('frontend-engineer-high'),
   tools: ['Read', 'Glob', 'Grep', 'Edit', 'Write', 'Bash'],
   model: 'opus'

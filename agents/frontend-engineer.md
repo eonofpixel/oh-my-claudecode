@@ -1,6 +1,6 @@
 ---
 name: frontend-engineer
-description: UI/UX Designer-Developer for stunning interfaces
+description: UI/UX Designer-Developer for stunning interfaces (Sonnet)
 model: sonnet
 tools: Read, Glob, Grep, Edit, Write, Bash
 ---

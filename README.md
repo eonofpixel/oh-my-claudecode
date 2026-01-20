@@ -4,7 +4,7 @@
 
 # oh-my-claudecode
 
-[![Version](https://img.shields.io/badge/version-3.0.0--beta-ff6b6b)](https://github.com/Yeachan-Heo/oh-my-claudecode/releases)
+[![Version](https://img.shields.io/badge/version-3.0.0--beta-ff6b6b)](https://github.com/Yeachan-Heo/oh-my-claude-sisyphus/tree/v3.0.0-beta)
 [![npm version](https://img.shields.io/npm/v/oh-my-claudecode?color=cb3837)](https://www.npmjs.com/package/oh-my-claudecode)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-20+-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
@@ -105,8 +105,8 @@ npm install -g oh-my-claudecode
 ### Manual Install (macOS/Linux)
 
 ```bash
-git clone https://github.com/Yeachan-Heo/oh-my-claudecode.git
-cd oh-my-claudecode
+git clone -b v3.0.0-beta https://github.com/Yeachan-Heo/oh-my-claude-sisyphus.git
+cd oh-my-claude-sisyphus
 chmod +x scripts/install.sh
 ./scripts/install.sh
 ```

@@ -125,8 +125,8 @@ The plugin provides 19 specialized agents with intelligent model routing:
 
 ## Need More Help?
 
-- **README**: Full documentation at https://github.com/Yeachan-Heo/oh-my-claudecode
-- **Issues**: Report bugs at https://github.com/Yeachan-Heo/oh-my-claudecode/issues
+- **README**: Full documentation at https://github.com/Yeachan-Heo/oh-my-claude-sisyphus/tree/v3.0.0-beta
+- **Issues**: Report bugs at https://github.com/Yeachan-Heo/oh-my-claude-sisyphus/issues
 - **Examples**: See examples/ directory in plugin
 
 ## Version

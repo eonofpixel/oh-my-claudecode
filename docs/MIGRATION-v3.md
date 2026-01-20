@@ -182,5 +182,5 @@ After migration, verify your setup:
 
 If you encounter issues during migration:
 - Check the [GitHub Issues](https://github.com/Yeachan-Heo/oh-my-claude-sisyphus/issues)
-- Review the [Documentation](https://github.com/Yeachan-Heo/oh-my-claude-sisyphus/tree/main/docs)
+- Review the [Documentation](https://github.com/Yeachan-Heo/oh-my-claude-sisyphus/tree/v3.0.0-beta/docs)
 - Run `/doctor` to diagnose common issues

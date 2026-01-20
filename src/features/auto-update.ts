@@ -311,7 +311,7 @@ export async function performUpdate(options?: {
           'Automated updates are not yet supported on Windows. ' +
           'Please run the installer manually:\n' +
           '  npm install -g oh-my-claudecode\n' +
-          'Or visit: https://github.com/Yeachan-Heo/oh-my-claudecode'
+          'Or visit: https://github.com/Yeachan-Heo/oh-my-claude-sisyphus/tree/v3.0.0-beta'
         );
       }
 

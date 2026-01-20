@@ -18,7 +18,7 @@ import type { PluginConfig } from '../shared/types.js';
  */
 export const DEFAULT_CONFIG: PluginConfig = {
   agents: {
-    sisyphus: { model: 'claude-opus-4-5-20251101' },
+    omc: { model: 'claude-opus-4-5-20251101' },
     architect: { model: 'claude-opus-4-5-20251101', enabled: true },
     researcher: { model: 'claude-sonnet-4-5-20250929' },
     explore: { model: 'claude-haiku-4-5-20251001' },

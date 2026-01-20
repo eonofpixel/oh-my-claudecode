@@ -63,7 +63,7 @@ if echo "$PROMPT_LOWER" | grep -qE '\b(ultrawork|ulw|uw)\b'; then
 }"
 
   # Write state to both local and global locations
-  echo "$STATE_JSON" > "$DIRECTORY/.sisyphus/ultrawork-state.json" 2>/dev/null
+  echo "$STATE_JSON" > "$DIRECTORY/.omc/ultrawork-state.json" 2>/dev/null
   echo "$STATE_JSON" > "$HOME/.claude/ultrawork-state.json" 2>/dev/null
 
   # Return ultrawork mode injection

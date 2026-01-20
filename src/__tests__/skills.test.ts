@@ -8,11 +8,13 @@ describe('Builtin Skills', () => {
   });
 
   describe('createBuiltinSkills()', () => {
-    it('should return correct number of skills (12)', () => {
+    it('should return correct number of skills (25)', () => {
       const skills = createBuiltinSkills();
-      // 12 skills: analyze, deepinit, deepsearch, frontend-ui-ux, git-master,
-      // planner, ralph-init, ralph, release, review, sisyphus, ultrawork
-      expect(skills).toHaveLength(12);
+      // 25 skills: analyze, cancel-ralph, cancel-ultraqa, cancel-ultrawork, deepinit,
+      // deepsearch, doctor, frontend-ui-ux, git-master, help, hud, learner, note,
+      // omc-default, omc-default-global, plan, planner, ralplan, ralph-init, ralph,
+      // release, review, orchestrate, ultraqa, ultrawork
+      expect(skills).toHaveLength(25);
     });
 
     it('should return an array of BuiltinSkill objects', () => {
@@ -74,6 +76,19 @@ describe('Builtin Skills', () => {
         'review',
         'deepinit',
         'release',
+        'cancel-ralph',
+        'cancel-ultraqa',
+        'cancel-ultrawork',
+        'learner',
+        'plan',
+        'ralplan',
+        'ultraqa',
+        'doctor',
+        'help',
+        'hud',
+        'note',
+        'omc-default',
+        'omc-default-global',
       ];
 
       const actualSkillNames = skills.map((s) => s.name);
@@ -117,7 +132,7 @@ describe('Builtin Skills', () => {
   describe('listBuiltinSkillNames()', () => {
     it('should return all skill names', () => {
       const names = listBuiltinSkillNames();
-      expect(names).toHaveLength(12);
+      expect(names).toHaveLength(25);
       expect(names).toContain('orchestrate');
       expect(names).toContain('ralph');
       expect(names).toContain('ralph-init');
@@ -130,6 +145,12 @@ describe('Builtin Skills', () => {
       expect(names).toContain('review');
       expect(names).toContain('deepinit');
       expect(names).toContain('release');
+      expect(names).toContain('doctor');
+      expect(names).toContain('help');
+      expect(names).toContain('hud');
+      expect(names).toContain('note');
+      expect(names).toContain('omc-default');
+      expect(names).toContain('omc-default-global');
     });
 
     it('should return an array of strings', () => {

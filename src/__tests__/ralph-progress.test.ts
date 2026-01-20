@@ -72,9 +72,9 @@ describe('Ralph Progress Module', () => {
     });
 
     it('should read progress from .omc directory', () => {
-      const sisyphusDir = join(testDir, '.omc');
-      mkdirSync(sisyphusDir, { recursive: true });
-      writeFileSync(join(sisyphusDir, PROGRESS_FILENAME), '# Test');
+      const omcDir = join(testDir, '.omc');
+      mkdirSync(omcDir, { recursive: true });
+      writeFileSync(join(omcDir, PROGRESS_FILENAME), '# Test');
       expect(readProgressRaw(testDir)).toBe('# Test');
     });
   });

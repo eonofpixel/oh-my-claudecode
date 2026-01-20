@@ -40,6 +40,13 @@ export const HUD_DIR = join(CLAUDE_CONFIG_DIR, 'hud');
 export const SETTINGS_FILE = join(CLAUDE_CONFIG_DIR, 'settings.json');
 export const VERSION_FILE = join(CLAUDE_CONFIG_DIR, '.omc-version.json');
 
+/**
+ * Core commands - DISABLED for v3.0+
+ * All commands are now plugin-scoped skills managed by Claude Code.
+ * The installer no longer copies commands to ~/.claude/commands/
+ */
+export const CORE_COMMANDS: string[] = [];
+
 /** Current version */
 export const VERSION = '3.0.0-beta';
 
@@ -264,9 +271,19 @@ export function install(options: InstallOptions = {}): InstallResult {
         }
       }
 
-      // Install commands
-      log('Installing slash commands...');
+      // Skip command installation - all commands are now plugin-scoped skills
+      // Commands are accessible via the plugin system (${CLAUDE_PLUGIN_ROOT}/commands/)
+      // and are managed by Claude Code's skill discovery mechanism.
+      log('Skipping slash command installation (all commands are now plugin-scoped skills)');
+
+      // The command installation loop is disabled - CORE_COMMANDS is empty
       for (const [filename, content] of Object.entries(loadCommandDefinitions())) {
+        // All commands are skipped - they're managed by the plugin system
+        if (!CORE_COMMANDS.includes(filename)) {
+          log(`  Skipping ${filename} (plugin-scoped skill)`);
+          continue;
+        }
+
         const filepath = join(COMMANDS_DIR, filename);
 
         // Create command directory if needed (only for nested paths like 'ultrawork/skill.md')

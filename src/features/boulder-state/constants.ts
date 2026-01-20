@@ -20,7 +20,7 @@ export const NOTEPAD_DIR = 'notepads';
 export const NOTEPAD_BASE_PATH = `${BOULDER_DIR}/${NOTEPAD_DIR}`;
 
 /** Planner plan directory */
-export const PLANNER_PLANS_DIR = '.sisyphus/plans';
+export const PLANNER_PLANS_DIR = '.omc/plans';
 
 /** Plan file extension */
 export const PLAN_EXTENSION = '.md';

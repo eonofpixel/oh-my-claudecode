@@ -26,9 +26,9 @@ export function render(context: HudRenderContext, config: HudConfig): string {
   const detailLines: string[] = [];
   const { elements: enabledElements } = config;
 
-  // [SISYPHUS] label
-  if (enabledElements.sisyphusLabel) {
-    elements.push(bold('[SISYPHUS]'));
+  // [OMC] label
+  if (enabledElements.omcLabel) {
+    elements.push(bold('[OMC]'));
   }
 
   // Rate limits (5h and weekly)

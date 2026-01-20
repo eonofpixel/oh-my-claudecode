@@ -202,7 +202,7 @@ export const DEFAULT_ROUTING_CONFIG: RoutingConfig = {
   tierModels: TIER_MODELS,
   agentOverrides: {
     // Only orchestrators are fixed - they need Opus to analyze and delegate
-    'orchestrator-sisyphus': { tier: 'HIGH', reason: 'Orchestrator requires Opus to analyze and delegate' },
+    'coordinator': { tier: 'HIGH', reason: 'Orchestrator requires Opus to analyze and delegate' },
   },
   escalationKeywords: [
     'critical', 'production', 'urgent', 'security', 'breaking',

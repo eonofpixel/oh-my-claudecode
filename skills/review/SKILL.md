@@ -1,6 +1,6 @@
 ---
 name: review
-description: Review a plan with Momus
+description: Review a plan with Critic
 ---
 
 # Review Skill
@@ -9,7 +9,7 @@ description: Review a plan with Momus
 
 ## Role
 
-Critically evaluate plans using Momus. No plan passes without meeting rigorous standards.
+Critically evaluate plans using Critic. No plan passes without meeting rigorous standards.
 
 ## Review Criteria
 

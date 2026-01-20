@@ -495,7 +495,7 @@ describe('Routing Rules', () => {
     it('should evaluate orchestrator rule', () => {
       const context: RoutingContext = {
         taskPrompt: 'test',
-        agentType: 'orchestrator-sisyphus',
+        agentType: 'coordinator',
       };
       const signals = extractAllSignals(context.taskPrompt, context);
       const result = evaluateRules(context, signals);
@@ -565,7 +565,7 @@ describe('Routing Rules', () => {
       const context: RoutingContext = {
         taskPrompt: 'test',
         explicitModel: 'haiku',
-        agentType: 'orchestrator-sisyphus',
+        agentType: 'coordinator',
       };
       const signals = extractAllSignals(context.taskPrompt, context);
       const result = evaluateRules(context, signals);
@@ -685,11 +685,11 @@ describe('Router', () => {
     it('should respect agent overrides', () => {
       const context: RoutingContext = {
         taskPrompt: 'test',
-        agentType: 'orchestrator-sisyphus',
+        agentType: 'coordinator',
       };
       const decision = routeTask(context, {
         agentOverrides: {
-          'orchestrator-sisyphus': { tier: 'HIGH', reason: 'Test override' },
+          'coordinator': { tier: 'HIGH', reason: 'Test override' },
         },
       });
 
@@ -777,8 +777,8 @@ describe('Router', () => {
   });
 
   describe('isFixedTierAgent', () => {
-    it('should return true for orchestrator-sisyphus', () => {
-      expect(isFixedTierAgent('orchestrator-sisyphus')).toBe(true);
+    it('should return true for coordinator', () => {
+      expect(isFixedTierAgent('coordinator')).toBe(true);
     });
 
     it('should return false for architect', () => {
@@ -796,7 +796,7 @@ describe('Router', () => {
 
   describe('getModelForTask', () => {
     it('should return opus for orchestrator', () => {
-      const result = getModelForTask('orchestrator-sisyphus', 'test task');
+      const result = getModelForTask('coordinator', 'test task');
       expect(result.model).toBe('opus');
       expect(result.tier).toBe('HIGH');
     });

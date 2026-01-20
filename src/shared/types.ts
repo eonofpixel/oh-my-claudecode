@@ -15,7 +15,7 @@ export interface AgentConfig {
 export interface PluginConfig {
   // Agent model overrides
   agents?: {
-    sisyphus?: { model?: string };
+    omc?: { model?: string };
     architect?: { model?: string; enabled?: boolean };
     researcher?: { model?: string };
     explore?: { model?: string };

@@ -50,21 +50,21 @@ describe('Notepad Module', () => {
       expect(content).toContain(PRIORITY_HEADER);
       expect(content).toContain(WORKING_MEMORY_HEADER);
       expect(content).toContain(MANUAL_HEADER);
-      expect(content).toContain('Auto-managed by Sisyphus');
+      expect(content).toContain('Auto-managed by OMC');
     });
 
-    it('should create .sisyphus directory if not exists', () => {
-      const sisyphusDir = join(testDir, '.sisyphus');
-      expect(existsSync(sisyphusDir)).toBe(false);
+    it('should create .omc directory if not exists', () => {
+      const omcDir = join(testDir, '.omc');
+      expect(existsSync(omcDir)).toBe(false);
 
       initNotepad(testDir);
 
-      expect(existsSync(sisyphusDir)).toBe(true);
+      expect(existsSync(omcDir)).toBe(true);
     });
 
     it('should not overwrite existing notepad', () => {
-      const sisyphusDir = join(testDir, '.sisyphus');
-      mkdirSync(sisyphusDir, { recursive: true });
+      const omcDir = join(testDir, '.omc');
+      mkdirSync(omcDir, { recursive: true });
       const notepadPath = getNotepadPath(testDir);
       const existingContent = '# Existing content\nTest data';
       writeFileSync(notepadPath, existingContent);

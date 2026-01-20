@@ -55,17 +55,17 @@ const SAME_FAILURE_THRESHOLD = 3;
  * Get the state file path for UltraQA
  */
 function getStateFilePath(directory: string): string {
-  const sisyphusDir = join(directory, '.sisyphus');
-  return join(sisyphusDir, 'ultraqa-state.json');
+  const omcDir = join(directory, '.omc');
+  return join(omcDir, 'ultraqa-state.json');
 }
 
 /**
- * Ensure the .sisyphus directory exists
+ * Ensure the .omc directory exists
  */
 function ensureStateDir(directory: string): void {
-  const sisyphusDir = join(directory, '.sisyphus');
-  if (!existsSync(sisyphusDir)) {
-    mkdirSync(sisyphusDir, { recursive: true });
+  const omcDir = join(directory, '.omc');
+  if (!existsSync(omcDir)) {
+    mkdirSync(omcDir, { recursive: true });
   }
 }
 
@@ -141,7 +141,7 @@ export function startUltraQA(
   if (isRalphLoopActive(directory)) {
     return {
       success: false,
-      error: 'Cannot start UltraQA while Ralph Loop is active. Cancel Ralph Loop first with /cancel-ralph.'
+      error: 'Cannot start UltraQA while Ralph Loop is active. Cancel Ralph Loop first with /oh-my-claudecode:cancel-ralph.'
     };
   }
 

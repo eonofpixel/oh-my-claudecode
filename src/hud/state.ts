@@ -16,12 +16,12 @@ import { DEFAULT_HUD_CONFIG, PRESET_CONFIGS } from './types.js';
 // ============================================================================
 
 /**
- * Get the HUD state file path in the project's .sisyphus directory
+ * Get the HUD state file path in the project's .omc directory
  */
 function getLocalStateFilePath(directory?: string): string {
   const baseDir = directory || process.cwd();
-  const sisyphusDir = join(baseDir, '.sisyphus');
-  return join(sisyphusDir, 'hud-state.json');
+  const omcDir = join(baseDir, '.omc');
+  return join(omcDir, 'hud-state.json');
 }
 
 /**
@@ -35,25 +35,25 @@ function getGlobalStateFilePath(): string {
  * Get the HUD config file path
  */
 function getConfigFilePath(): string {
-  return join(homedir(), '.claude', '.sisyphus', 'hud-config.json');
+  return join(homedir(), '.claude', '.omc', 'hud-config.json');
 }
 
 /**
- * Ensure the .sisyphus directory exists
+ * Ensure the .omc directory exists
  */
 function ensureStateDir(directory?: string): void {
   const baseDir = directory || process.cwd();
-  const sisyphusDir = join(baseDir, '.sisyphus');
-  if (!existsSync(sisyphusDir)) {
-    mkdirSync(sisyphusDir, { recursive: true });
+  const omcDir = join(baseDir, '.omc');
+  if (!existsSync(omcDir)) {
+    mkdirSync(omcDir, { recursive: true });
   }
 }
 
 /**
- * Ensure the ~/.claude/.sisyphus directory exists
+ * Ensure the ~/.claude/.omc directory exists
  */
 function ensureGlobalConfigDir(): void {
-  const configDir = join(homedir(), '.claude', '.sisyphus');
+  const configDir = join(homedir(), '.claude', '.omc');
   if (!existsSync(configDir)) {
     mkdirSync(configDir, { recursive: true });
   }
@@ -110,7 +110,7 @@ export function writeHudState(
   directory?: string
 ): boolean {
   try {
-    // Write to local .sisyphus
+    // Write to local .omc
     ensureStateDir(directory);
     const localStateFile = getLocalStateFilePath(directory);
     writeFileSync(localStateFile, JSON.stringify(state, null, 2));

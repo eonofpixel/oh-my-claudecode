@@ -91,7 +91,7 @@ interface UltraworkState {
 
 /**
  * Read Ultrawork state for HUD display.
- * Checks both local .sisyphus and global ~/.claude locations.
+ * Checks both local .omc and global ~/.claude locations.
  */
 export function readUltraworkStateForHud(
   directory: string
@@ -153,14 +153,14 @@ interface PRD {
 
 /**
  * Read PRD state for HUD display.
- * Checks both root prd.json and .sisyphus/prd.json.
+ * Checks both root prd.json and .omc/prd.json.
  */
 export function readPrdStateForHud(directory: string): PrdStateForHud | null {
   // Check root first
   let prdPath = join(directory, 'prd.json');
 
   if (!existsSync(prdPath)) {
-    // Check .sisyphus
+    // Check .omc
     prdPath = join(directory, '.omc', 'prd.json');
 
     if (!existsSync(prdPath)) {

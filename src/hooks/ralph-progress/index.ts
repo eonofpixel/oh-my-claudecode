@@ -66,14 +66,14 @@ export function getProgressPath(directory: string): string {
 }
 
 /**
- * Get the path to progress.txt in .sisyphus subdirectory
+ * Get the path to progress.txt in .omc subdirectory
  */
-export function getSisyphusProgressPath(directory: string): string {
+export function getOmcProgressPath(directory: string): string {
   return join(directory, '.omc', PROGRESS_FILENAME);
 }
 
 /**
- * Find progress.txt in a directory (checks both root and .sisyphus)
+ * Find progress.txt in a directory (checks both root and .omc)
  */
 export function findProgressPath(directory: string): string | null {
   const rootPath = getProgressPath(directory);
@@ -81,9 +81,9 @@ export function findProgressPath(directory: string): string | null {
     return rootPath;
   }
 
-  const sisyphusPath = getSisyphusProgressPath(directory);
-  if (existsSync(sisyphusPath)) {
-    return sisyphusPath;
+  const omcPath = getOmcProgressPath(directory);
+  if (existsSync(omcPath)) {
+    return omcPath;
   }
 
   return null;
@@ -225,16 +225,16 @@ export function readProgress(directory: string): ProgressLog | null {
  * Initialize a new progress.txt file
  */
 export function initProgress(directory: string): boolean {
-  const sisyphusDir = join(directory, '.omc');
-  if (!existsSync(sisyphusDir)) {
+  const omcDir = join(directory, '.omc');
+  if (!existsSync(omcDir)) {
     try {
-      mkdirSync(sisyphusDir, { recursive: true });
+      mkdirSync(omcDir, { recursive: true });
     } catch {
       return false;
     }
   }
 
-  const progressPath = getSisyphusProgressPath(directory);
+  const progressPath = getOmcProgressPath(directory);
   const now = new Date().toISOString();
 
   const content = `# Ralph Progress Log
@@ -269,7 +269,7 @@ export function appendProgress(
     if (!initProgress(directory)) {
       return false;
     }
-    progressPath = getSisyphusProgressPath(directory);
+    progressPath = getOmcProgressPath(directory);
   }
 
   const now = new Date().toISOString();

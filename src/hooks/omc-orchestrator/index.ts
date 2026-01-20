@@ -1,11 +1,11 @@
 /**
- * Sisyphus Orchestrator Hook
+ * OMC Orchestrator Hook
  *
  * Enforces orchestrator behavior - delegation over direct implementation.
- * When an orchestrator agent tries to directly modify files outside .sisyphus/,
+ * When an orchestrator agent tries to directly modify files outside .omc/,
  * this hook injects reminders to delegate to subagents instead.
  *
- * Adapted from oh-my-opencode's sisyphus-orchestrator hook for shell-based hooks.
+ * Adapted from oh-my-opencode's omc-orchestrator hook for shell-based hooks.
  */
 
 import { execSync } from 'child_process';
@@ -371,7 +371,7 @@ export function checkBoulderContinuation(directory: string): {
 }
 
 /**
- * Create sisyphus orchestrator hook handlers
+ * Create omc orchestrator hook handlers
  */
 export function createSisyphusOrchestratorHook(directory: string) {
   return {

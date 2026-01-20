@@ -81,14 +81,14 @@ export function getPrdPath(directory: string): string {
 }
 
 /**
- * Get the path to the prd.json in .sisyphus subdirectory
+ * Get the path to the prd.json in .omc subdirectory
  */
-export function getSisyphusPrdPath(directory: string): string {
+export function getOmcPrdPath(directory: string): string {
   return join(directory, '.omc', PRD_FILENAME);
 }
 
 /**
- * Find prd.json in a directory (checks both root and .sisyphus)
+ * Find prd.json in a directory (checks both root and .omc)
  */
 export function findPrdPath(directory: string): string | null {
   const rootPath = getPrdPath(directory);
@@ -96,9 +96,9 @@ export function findPrdPath(directory: string): string | null {
     return rootPath;
   }
 
-  const sisyphusPath = getSisyphusPrdPath(directory);
-  if (existsSync(sisyphusPath)) {
-    return sisyphusPath;
+  const omcPath = getOmcPrdPath(directory);
+  if (existsSync(omcPath)) {
+    return omcPath;
   }
 
   return null;
@@ -132,19 +132,19 @@ export function readPrd(directory: string): PRD | null {
  * Write PRD to disk
  */
 export function writePrd(directory: string, prd: PRD): boolean {
-  // Prefer writing to existing location, or .sisyphus by default
+  // Prefer writing to existing location, or .omc by default
   let prdPath = findPrdPath(directory);
 
   if (!prdPath) {
-    const sisyphusDir = join(directory, '.omc');
-    if (!existsSync(sisyphusDir)) {
+    const omcDir = join(directory, '.omc');
+    if (!existsSync(omcDir)) {
       try {
-        mkdirSync(sisyphusDir, { recursive: true });
+        mkdirSync(omcDir, { recursive: true });
       } catch {
         return false;
       }
     }
-    prdPath = getSisyphusPrdPath(directory);
+    prdPath = getOmcPrdPath(directory);
   }
 
   try {

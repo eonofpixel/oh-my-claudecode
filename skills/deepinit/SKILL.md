@@ -151,7 +151,7 @@ grep -r "<!-- Parent:" --include="AGENTS.md" .
 | Task | Agent |
 |------|-------|
 | Directory mapping | `explore` |
-| File analysis | `oracle-low` |
+| File analysis | `architect-low` |
 | Content generation | `document-writer` |
 | Multi-file writes | `junior` |
 

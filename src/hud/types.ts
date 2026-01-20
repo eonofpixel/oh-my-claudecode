@@ -200,7 +200,7 @@ export type HudPreset = 'minimal' | 'focused' | 'full' | 'opencode' | 'dense';
 export type AgentsFormat = 'count' | 'codes' | 'codes-duration' | 'detailed' | 'descriptions' | 'tasks' | 'multiline';
 
 export interface HudElementConfig {
-  sisyphusLabel: boolean;
+  omcLabel: boolean;
   rateLimits: boolean;  // Show 5h and weekly rate limits
   ralph: boolean;
   prdStory: boolean;
@@ -237,7 +237,7 @@ export interface HudConfig {
 export const DEFAULT_HUD_CONFIG: HudConfig = {
   preset: 'focused',
   elements: {
-    sisyphusLabel: true,
+    omcLabel: true,
     rateLimits: true,  // Show rate limits by default
     ralph: true,
     prdStory: true,
@@ -263,7 +263,7 @@ export const DEFAULT_HUD_CONFIG: HudConfig = {
 
 export const PRESET_CONFIGS: Record<HudPreset, Partial<HudElementConfig>> = {
   minimal: {
-    sisyphusLabel: true,
+    omcLabel: true,
     rateLimits: true,
     ralph: true,
     prdStory: false,
@@ -280,7 +280,7 @@ export const PRESET_CONFIGS: Record<HudPreset, Partial<HudElementConfig>> = {
     sessionHealth: false,
   },
   focused: {
-    sisyphusLabel: true,
+    omcLabel: true,
     rateLimits: true,
     ralph: true,
     prdStory: true,
@@ -297,7 +297,7 @@ export const PRESET_CONFIGS: Record<HudPreset, Partial<HudElementConfig>> = {
     sessionHealth: true,
   },
   full: {
-    sisyphusLabel: true,
+    omcLabel: true,
     rateLimits: true,
     ralph: true,
     prdStory: true,
@@ -314,7 +314,7 @@ export const PRESET_CONFIGS: Record<HudPreset, Partial<HudElementConfig>> = {
     sessionHealth: true,
   },
   opencode: {
-    sisyphusLabel: true,
+    omcLabel: true,
     rateLimits: false,
     ralph: true,
     prdStory: false,
@@ -331,7 +331,7 @@ export const PRESET_CONFIGS: Record<HudPreset, Partial<HudElementConfig>> = {
     sessionHealth: true,
   },
   dense: {
-    sisyphusLabel: true,
+    omcLabel: true,
     rateLimits: true,
     ralph: true,
     prdStory: true,

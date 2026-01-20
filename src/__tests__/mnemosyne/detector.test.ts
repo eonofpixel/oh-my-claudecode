@@ -126,7 +126,7 @@ describe('Skill Detector', () => {
       expect(prompt).toContain('useful technique');
       expect(prompt).toContain('80%');
       expect(prompt).toContain('react, hooks');
-      expect(prompt).toContain('/learner');
+      expect(prompt).toContain('oh-my-claudecode:learner');
     });
   });
 });

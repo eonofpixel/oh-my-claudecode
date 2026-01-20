@@ -1,21 +1,6 @@
 {
   "name": "oh-my-claudecode",
-  "version": "2.6.1",
-  "description": "Claude Code native multi-agent orchestration - compaction-resilient memory, PRD support, 19 agents, 19 commands, 358 tests",
-  "author": {
-    "name": "Yeachan Heo",
-    "email": "hurrc04@gmail.com",
-    "url": "https://github.com/Yeachan-Heo"
-  },
-  "homepage": "https://github.com/Yeachan-Heo/oh-my-claude-sisyphus#readme",
-  "repository": "https://github.com/Yeachan-Heo/oh-my-claude-sisyphus",
-  "license": "MIT",
-  "keywords": [
-    "multi-agent",
-    "orchestration",
-    "ultrawork",
-    "delegation",
-    "todo-management",
-    "productivity"
-  ]
+  "version": "3.0.0-beta",
+  "description": "Multi-agent orchestration system for Claude Code",
+  "skills": "./skills/"
 }

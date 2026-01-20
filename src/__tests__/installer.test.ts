@@ -194,20 +194,8 @@ describe('Installer Constants', () => {
   });
 
   describe('COMMAND_DEFINITIONS', () => {
-    it('should contain expected commands', () => {
-      const expectedCommands = [
-        'ultrawork.md',
-        'deepsearch.md',
-        'analyze.md',
-        'orchestrate.md',
-        'omc-default.md',
-        'omc-default-global.md',
-        'plan.md',
-        'review.md',
-        'planner.md',
-        'ralph.md',
-        'cancel-ralph.md',
-      ];
+    it('should contain expected commands (0 commands - all migrated to skills)', () => {
+      const expectedCommands: string[] = [];
 
       for (const command of expectedCommands) {
         expect(COMMAND_DEFINITIONS).toHaveProperty(command);
@@ -240,18 +228,7 @@ describe('Installer Constants', () => {
     });
 
     it('should contain $ARGUMENTS placeholder in commands that need it', () => {
-      const commandsWithArgs = [
-        'ultrawork.md',
-        'deepsearch.md',
-        'analyze.md',
-        'orchestrate.md',
-        'omc-default.md',
-        'omc-default-global.md',
-        'plan.md',
-        'review.md',
-        'planner.md',
-        'ralph.md',
-      ];
+      const commandsWithArgs: string[] = [];
 
       for (const command of commandsWithArgs) {
         const content = COMMAND_DEFINITIONS[command];
@@ -297,7 +274,7 @@ describe('Installer Constants', () => {
       ];
 
       for (const agent of coreAgents) {
-        // Agents are prefixed with oh-my-claudecode: in the content
+        // Agents are prefixed with oh-my-claudecode: in the content (will be updated to oh-my-opencode: in rebrand)
         expect(CLAUDE_MD_CONTENT).toMatch(new RegExp(`oh-my-claudecode:${agent}`));
       }
     });

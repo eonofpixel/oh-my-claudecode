@@ -30,8 +30,8 @@ import {
 
 // Forward declaration to avoid circular import - check ultraqa state file directly
 export function isUltraQAActive(directory: string): boolean {
-  const sisyphusDir = join(directory, '.omc');
-  const stateFile = join(sisyphusDir, 'ultraqa-state.json');
+  const omcDir = join(directory, '.omc');
+  const stateFile = join(omcDir, 'ultraqa-state.json');
   if (!existsSync(stateFile)) {
     return false;
   }
@@ -85,17 +85,17 @@ const DEFAULT_COMPLETION_PROMISE = 'TASK_COMPLETE';
  * Get the state file path for Ralph Loop
  */
 function getStateFilePath(directory: string): string {
-  const sisyphusDir = join(directory, '.omc');
-  return join(sisyphusDir, 'ralph-state.json');
+  const omcDir = join(directory, '.omc');
+  return join(omcDir, 'ralph-state.json');
 }
 
 /**
- * Ensure the .sisyphus directory exists
+ * Ensure the .omc directory exists
  */
 function ensureStateDir(directory: string): void {
-  const sisyphusDir = join(directory, '.omc');
-  if (!existsSync(sisyphusDir)) {
-    mkdirSync(sisyphusDir, { recursive: true });
+  const omcDir = join(directory, '.omc');
+  if (!existsSync(omcDir)) {
+    mkdirSync(omcDir, { recursive: true });
   }
 }
 
@@ -218,7 +218,7 @@ export function createRalphLoopHook(directory: string): RalphLoopHook {
   ): boolean => {
     // Mutual exclusion check: cannot start Ralph Loop if UltraQA is active
     if (isUltraQAActive(directory)) {
-      console.error('Cannot start Ralph Loop while UltraQA is active. Cancel UltraQA first with /cancel-ultraqa.');
+      console.error('Cannot start Ralph Loop while UltraQA is active. Cancel UltraQA first with /oh-my-claudecode:cancel-ultraqa.');
       return false;
     }
 

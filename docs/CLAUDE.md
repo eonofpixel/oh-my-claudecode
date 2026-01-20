@@ -197,7 +197,7 @@ Extract reusable skills from problem-solving sessions. Named after the Greek god
 ### Storage
 
 - User-level: `~/.claude/skills/sisyphus-learned/` (portable across projects)
-- Project-level: `.sisyphus/skills/` (version-controllable with repo)
+- Project-level: `.omc/skills/` (version-controllable with repo)
 
 Skills are automatically injected when trigger keywords are detected in user messages.
 
@@ -217,7 +217,7 @@ Run `/hud setup` to auto-install statusline to `~/.claude/hud/sisyphus-hud.mjs`
 
 ### Configuration
 
-HUD config stored at: `~/.claude/.sisyphus/hud-config.json`
+HUD config stored at: `~/.claude/.omc/hud-config.json`
 
 ## Ralph Loop with PRD Support
 

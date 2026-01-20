@@ -24,10 +24,10 @@ export const GITHUB_RAW_URL = `https://raw.githubusercontent.com/${REPO_OWNER}/$
 /** Installation paths */
 export const CLAUDE_CONFIG_DIR = join(homedir(), '.claude');
 export const VERSION_FILE = join(CLAUDE_CONFIG_DIR, '.omc-version.json');
-export const CONFIG_FILE = join(CLAUDE_CONFIG_DIR, '.sisyphus-config.json');
+export const CONFIG_FILE = join(CLAUDE_CONFIG_DIR, '.omc-config.json');
 
 /**
- * Sisyphus configuration (stored in .sisyphus-config.json)
+ * OMC configuration (stored in .omc-config.json)
  */
 export interface SisyphusConfig {
   /** Whether silent auto-updates are enabled (opt-in for security) */
@@ -295,7 +295,7 @@ export async function performUpdate(options?: {
 
     // Save to a temporary file
     const tempDir = tmpdir();
-    const tempScript = join(tempDir, `sisyphus-update-${Date.now()}.sh`);
+    const tempScript = join(tempDir, `omc-update-${Date.now()}.sh`);
 
     writeFileSync(tempScript, scriptContent, { mode: 0o755 });
 
@@ -491,7 +491,7 @@ export interface SilentUpdateConfig {
 }
 
 /** State file for tracking silent update status */
-const SILENT_UPDATE_STATE_FILE = join(CLAUDE_CONFIG_DIR, '.sisyphus-silent-update.json');
+const SILENT_UPDATE_STATE_FILE = join(CLAUDE_CONFIG_DIR, '.omc-silent-update.json');
 
 interface SilentUpdateState {
   lastAttempt?: string;
@@ -566,7 +566,7 @@ export async function silentAutoUpdate(config: SilentUpdateConfig = {}): Promise
   const {
     checkIntervalHours = 24,
     autoApply = true,
-    logFile = join(CLAUDE_CONFIG_DIR, '.sisyphus-update.log'),
+    logFile = join(CLAUDE_CONFIG_DIR, '.omc-update.log'),
     maxRetries = 3
   } = config;
 

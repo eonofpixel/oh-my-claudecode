@@ -1,11 +1,11 @@
 ---
-name: ralph-loop
-description: Self-referential loop until task completion with oracle verification
+name: ralph
+description: Self-referential loop until task completion with architect verification
 ---
 
-# Ralph Loop Skill
+# Ralph Skill
 
-[RALPH LOOP - ITERATION {{ITERATION}}/{{MAX}}]
+[RALPH - ITERATION {{ITERATION}}/{{MAX}}]
 
 Your previous attempt did not output the completion promise. Continue working on the task.
 
@@ -17,26 +17,26 @@ Before claiming completion, you MUST:
 3. Check that code compiles/runs without errors
 4. Verify tests pass (if applicable)
 
-## ORACLE VERIFICATION (MANDATORY)
+## ARCHITECT VERIFICATION (MANDATORY)
 
 When you believe the task is complete:
-1. **First**, spawn Oracle to verify your work (ALWAYS pass model explicitly!):
+1. **First**, spawn Architect to verify your work (ALWAYS pass model explicitly!):
    ```
-   Task(subagent_type="oracle", model="opus", prompt="Verify this implementation is complete: [describe what you did]")
+   Task(subagent_type="oh-my-claudecode:architect", model="opus", prompt="Verify this implementation is complete: [describe what you did]")
    ```
 
-2. **Wait for Oracle's assessment**
+2. **Wait for Architect's assessment**
 
-3. **If Oracle approves**: Output `<promise>{{PROMISE}}</promise>`
-4. **If Oracle finds issues**: Fix them, then repeat verification
+3. **If Architect approves**: Output `<promise>{{PROMISE}}</promise>`
+4. **If Architect finds issues**: Fix them, then repeat verification
 
-DO NOT output the completion promise without Oracle verification.
+DO NOT output the completion promise without Architect verification.
 
 ## INSTRUCTIONS
 
 - Review your progress so far
 - Continue from where you left off
-- When FULLY complete AND Oracle verified, output: <promise>{{PROMISE}}</promise>
+- When FULLY complete AND Architect verified, output: <promise>{{PROMISE}}</promise>
 - Do not stop until the task is truly done
 
 Original task:

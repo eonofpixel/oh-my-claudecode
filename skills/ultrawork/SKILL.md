@@ -25,14 +25,14 @@ This skill enhances Claude's capabilities by:
 
 | Domain | LOW (Haiku) | MEDIUM (Sonnet) | HIGH (Opus) |
 |--------|-------------|-----------------|-------------|
-| **Analysis** | `oracle-low` | `oracle-medium` | `oracle` |
+| **Analysis** | `architect-low` | `architect-medium` | `architect` |
 | **Execution** | `junior-low` | `junior` | `junior-high` |
 | **Search** | `explore` | `explore-medium` | - |
-| **Research** | `librarian-low` | `librarian` | - |
+| **Research** | `researcher-low` | `researcher` | - |
 | **Frontend** | `frontend-engineer-low` | `frontend-engineer` | `frontend-engineer-high` |
 | **Docs** | `document-writer` | - | - |
 | **Visual** | - | `multimodal-looker` | - |
-| **Planning** | - | - | `planner`, `momus`, `metis` |
+| **Planning** | - | - | `planner`, `critic`, `analyst` |
 | **Testing** | - | `qa-tester` | - |
 
 ### Tier Selection Guide
@@ -49,7 +49,7 @@ This skill enhances Claude's capabilities by:
 
 ```
 // Simple question → LOW tier (saves tokens!)
-Task(subagent_type="oracle-low", model="haiku", prompt="What does this function return?")
+Task(subagent_type="architect-low", model="haiku", prompt="What does this function return?")
 
 // Standard implementation → MEDIUM tier
 Task(subagent_type="junior", model="sonnet", prompt="Add error handling to login")

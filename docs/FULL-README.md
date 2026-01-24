@@ -193,7 +193,7 @@ Chain agents with data passing between stages:
 | Preset | Stages |
 |--------|--------|
 | `review` | explore → architect → critic → executor |
-| `implement` | planner → executor → tdd-guide |
+| `implement` | analyst → executor → tdd-guide |
 | `debug` | explore → architect → build-fixer |
 | `research` | parallel(researcher, explore) → architect → writer |
 | `refactor` | explore → architect-medium → executor-high → qa-tester |
@@ -363,8 +363,8 @@ oh-my-claudecode/
 ├── .claude-plugin/
 │   └── plugin.json            # Plugin manifest
 ├── agents/                    # 32 specialized agents (tiered: architect, executor, explore, etc.)
-├── commands/                  # 35 slash commands
-├── skills/                    # 35 skills (orchestrate, ultrawork, ultrapilot, swarm, pipeline, ecomode, ralph, planner, research, tdd, build-fix, code-review, security-review, and more)
+├── commands/                  # 30 slash commands
+├── skills/                    # 35 skills (orchestrate, ultrawork, ultrapilot, swarm, pipeline, ecomode, ralph, plan, research, tdd, build-fix, code-review, security-review, and more)
 ├── hooks/
 │   └── hooks.json             # Hook configuration
 └── scripts/                   # Hook scripts
@@ -386,18 +386,37 @@ The installer adds to your Claude Code config (`~/.claude/`):
 │   ├── critic.md              # Plan reviewer (Opus)
 │   ├── analyst.md             # Pre-planning consultant (Opus)
 │   ├── executor.md            # Focused executor (Sonnet)
-│   ├── planner.md             # Strategic planner (Opus)
 │   └── qa-tester.md           # CLI/service testing (Sonnet)
 ├── commands/
-│   ├── orchestrate.md      # /oh-my-claudecode:orchestrate command
-│   ├── ultrawork.md        # /oh-my-claudecode:ultrawork command
-│   ├── deepsearch.md       # /oh-my-claudecode:deepsearch command
 │   ├── analyze.md          # /oh-my-claudecode:analyze command
-│   ├── plan.md             # /oh-my-claudecode:plan command (planner)
-│   ├── review.md           # /oh-my-claudecode:review command (critic)
-│   ├── planner.md          # /oh-my-claudecode:planner command
-│   ├── orchestrator.md     # /oh-my-claudecode:orchestrator command
-│   └── ralph-loop.md       # /oh-my-claudecode:ralph-loop command
+│   ├── autopilot.md        # /oh-my-claudecode:autopilot command
+│   ├── build-fix.md        # /oh-my-claudecode:build-fix command
+│   ├── cancel.md           # /oh-my-claudecode:cancel command
+│   ├── code-review.md      # /oh-my-claudecode:code-review command
+│   ├── deepinit.md         # /oh-my-claudecode:deepinit command
+│   ├── deepsearch.md       # /oh-my-claudecode:deepsearch command
+│   ├── doctor.md           # /oh-my-claudecode:doctor command
+│   ├── ecomode.md          # /oh-my-claudecode:ecomode command
+│   ├── help.md             # /oh-my-claudecode:help command
+│   ├── hud.md              # /oh-my-claudecode:hud command
+│   ├── learner.md          # /oh-my-claudecode:learner command
+│   ├── mcp-setup.md        # /oh-my-claudecode:mcp-setup command
+│   ├── note.md             # /oh-my-claudecode:note command
+│   ├── omc-setup.md        # /oh-my-claudecode:omc-setup command
+│   ├── pipeline.md         # /oh-my-claudecode:pipeline command
+│   ├── plan.md             # /oh-my-claudecode:plan command
+│   ├── ralph-init.md       # /oh-my-claudecode:ralph-init command
+│   ├── ralph.md            # /oh-my-claudecode:ralph command
+│   ├── ralplan.md          # /oh-my-claudecode:ralplan command
+│   ├── release.md          # /oh-my-claudecode:release command
+│   ├── research.md         # /oh-my-claudecode:research command
+│   ├── review.md           # /oh-my-claudecode:review command
+│   ├── security-review.md  # /oh-my-claudecode:security-review command
+│   ├── swarm.md            # /oh-my-claudecode:swarm command
+│   ├── tdd.md              # /oh-my-claudecode:tdd command
+│   ├── ultrapilot.md       # /oh-my-claudecode:ultrapilot command
+│   ├── ultraqa.md          # /oh-my-claudecode:ultraqa command
+│   └── ultrawork.md        # /oh-my-claudecode:ultrawork command
 ├── skills/
 │   ├── ultrawork/SKILL.md  # Maximum performance mode
 │   ├── deepinit/SKILL.md   # Hierarchical AGENTS.md generation
@@ -429,9 +448,8 @@ claude
 | `/oh-my-claudecode:deepsearch <query>` | Thorough multi-strategy codebase search |
 | `/oh-my-claudecode:deepinit [path]` | Index codebase with hierarchical AGENTS.md files |
 | `/oh-my-claudecode:analyze <target>` | Deep analysis and investigation |
-| `/oh-my-claudecode:plan <description>` | Start planning session with planner |
+| `/oh-my-claudecode:plan <description>` | Start planning session |
 | `/oh-my-claudecode:review [plan-path]` | Review a plan with critic |
-| `/oh-my-claudecode:planner <task>` | Strategic planning with interview workflow |
 | `/oh-my-claudecode:doctor` | Diagnose and fix installation issues |
 
 ### Examples
@@ -560,7 +578,6 @@ Oh-my-claudecode includes 19 lifecycle hooks that enhance Claude Code's behavior
 | **ralph** | Self-referential development until completion |
 | **ralph-init** | Initialize PRD for structured task tracking |
 | **ultraqa** | Autonomous QA cycling workflow |
-| **planner** | Strategic planning with interview workflow |
 | **plan** | Start planning session |
 | **ralplan** | Iterative planning (Planner+Architect+Critic) |
 | **review** | Review work plans with critic |
@@ -603,7 +620,7 @@ Skills work in **three composable layers**:
 
 | Layer | Skills | Purpose |
 |-------|--------|---------|
-| **Execution** | orchestrate, orchestrator, planner | HOW you work (pick primary) |
+| **Execution** | orchestrate, orchestrator, plan | HOW you work (pick primary) |
 | **Enhancement** | ultrawork, git-master, frontend-ui-ux | ADD capabilities (stack multiple) |
 | **Guarantee** | ralph-loop | ENSURE completion |
 
@@ -621,7 +638,7 @@ Claude uses judgment to detect task type and activate appropriate skill combinat
 | + must complete | `orchestrate + ralph-loop` | User emphasizes completion |
 | UI/frontend work | `orchestrate + frontend-ui-ux` | Components, styling |
 | Complex debugging | `architect` → `orchestrate` | Root cause → fix |
-| Strategic planning | `planner` | Need plan first |
+| Strategic planning | `plan` | Need plan first |
 | Maximum performance | `ultrawork` (stacks) | Speed critical |
 
 ### Examples
@@ -634,7 +651,7 @@ Claude uses judgment to detect task type and activate appropriate skill combinat
 → ultrawork + orchestrate + git-master
 
 "Plan auth system, then implement it completely"
-→ planner (first) → orchestrate + ralph-loop (after plan)
+→ plan (first) → orchestrate + ralph-loop (after plan)
 
 "Fix this bug, don't stop until it's done"
 → orchestrate + ralph-loop
@@ -662,7 +679,6 @@ Claude will automatically delegate to these specialized agents:
 
 | | Agent | Model | Best For |
 |---|-------|-------|----------|
-| **planner** | Opus | Strategic planning, comprehensive work plans, interview-style requirement gathering |
 | **critic** | Opus | Critical plan review, feasibility assessment, risk identification |
 | **analyst** | Opus | Pre-planning analysis, hidden requirement detection, ambiguity resolution |
 
@@ -733,8 +749,8 @@ curl -fsSL https://raw.githubusercontent.com/Yeachan-Heo/oh-my-claudecode/main/s
 Or manually:
 
 ```bash
-rm ~/.claude/agents/{architect,researcher,explore,designer,writer,vision,critic,analyst,executor,planner,qa-tester}.md
-rm ~/.claude/commands/{orchestrate,ultrawork,deepsearch,analyze,plan,review,planner,orchestrator,ralph-loop}.md
+rm ~/.claude/agents/{architect,researcher,explore,designer,writer,vision,critic,analyst,executor,qa-tester}.md
+rm ~/.claude/commands/{analyze,autopilot,deepsearch,plan,review,ultrawork}.md
 ```
 
 ---
@@ -776,9 +792,9 @@ for await (const message of query({
 ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
 │    PLANNING     │  │   EXECUTION     │  │    SUPPORT      │
 ├─────────────────┤  ├─────────────────┤  ├─────────────────┤
-│ planner         │  │ architect       │  │ researcher      │
-│ critic          │  │ designer        │  │ explore         │
-│ analyst         │  │ orchestrator    │  │ writer          │
+│ critic          │  │ architect       │  │ researcher      │
+│ analyst         │  │ designer        │  │ explore         │
+│                 │  │ orchestrator    │  │ writer          │
 │                 │  │ executor        │  │ vision          │
 └─────────────────┘  └─────────────────┘  └─────────────────┘
 ```
@@ -812,7 +828,6 @@ The original oh-my-opencode used multiple AI providers. This project uses Claude
 | **critic** | GPT-5.2 | Claude Opus | Plan reviewer |
 | **analyst** | Claude Opus 4.5 | Claude Opus | Pre-planning consultant |
 | **executor** | Configurable | Claude Sonnet | Focused task executor |
-| **planner** | Planning System | Claude Opus | Strategic planner |
 
 **Why Claude-only?** The Claude Agent SDK is designed for Claude models. Using Claude throughout provides:
 - Consistent behavior and capabilities
@@ -870,9 +885,9 @@ The original oh-my-opencode used multiple AI providers. This project uses Claude
 
 | Feature | Description |
 |---------|-------------|
-| **32 Specialized Agents** | architect, researcher, explore, designer, writer, vision, qa-tester, critic, analyst, executor, planner (+ tiered variants: -low, -medium, -high) + security-reviewer, build-fixer, tdd-guide, code-reviewer, scientist (all with tier variants) |
+| **32 Specialized Agents** | architect, researcher, explore, designer, writer, vision, qa-tester, critic, analyst, executor (+ tiered variants: -low, -medium, -high) + security-reviewer, build-fixer, tdd-guide, code-reviewer, scientist (all with tier variants) |
 | **19 Lifecycle Hooks** | rules-injector, omc-orchestrator, auto-slash-command, keyword-detector, ralph-loop, todo-continuation, notepad, post-tool-use, context-window-limit-recovery, preemptive-compaction, session-recovery, directory-readme-injector, comment-checker, thinking-block-validator, empty-message-sanitizer, edit-error-recovery, non-interactive-env, agent-usage-reminder, background-notification |
-| **35 Builtin Skills** | orchestrate, autopilot, ultrawork, ultrapilot, swarm, pipeline, ecomode, ralph, ralph-init, ultraqa, planner, plan, ralplan, review, deepinit, deepsearch, analyze, research, frontend-ui-ux, git-master, tdd, learner, note, cancel, omc-setup, doctor, help, hud, release, mcp-setup |
+| **35 Builtin Skills** | orchestrate, autopilot, ultrawork, ultrapilot, swarm, pipeline, ecomode, ralph, ralph-init, ultraqa, plan, ralplan, review, deepinit, deepsearch, analyze, research, frontend-ui-ux, git-master, tdd, learner, note, cancel, omc-setup, doctor, help, hud, release, mcp-setup |
 | **Magic Keywords** | `ultrawork`, `search`, `analyze`, `ultrathink` trigger enhanced modes |
 | **Slash Commands** | All skills available via `/oh-my-claudecode:skill-name` (e.g., `/oh-my-claudecode:ultrawork`, `/oh-my-claudecode:ralph`, `/oh-my-claudecode:plan`) |
 | **Compaction-Resilient Memory** | Three-tier notepad system (Priority Context, Working Memory, MANUAL) |
@@ -950,7 +965,7 @@ If you're coming from oh-my-opencode:
 2. **LSP Workflows**: All LSP tools are available! Use `lsp_servers` to check which servers are installed
 3. **AST Searches**: Use `ast_grep_search` with pattern syntax (e.g., `function $NAME($$$)`)
 4. **Background Tasks**: Claude Code's `Task` tool with `run_in_background` works similarly
-5. **Planning**: Use `/oh-my-claudecode:plan` command to start a planning session with planner
+5. **Planning**: Use `/oh-my-claudecode:plan` command to start a planning session
 
 </details>
 

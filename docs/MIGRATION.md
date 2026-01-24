@@ -900,7 +900,7 @@ A: No. Keywords are optional shortcuts. Claude auto-detects intent without them.
 A: No. All commands continue to work across minor versions (3.0 → 3.1). Major version changes (3.x → 4.0) will provide migration paths.
 
 **Q: What if I like explicit commands?**
-A: Keep using them! `/oh-my-claudecode:ralph`, `/oh-my-claudecode:ultrawork`, `/oh-my-claudecode:planner` all still work.
+A: Keep using them! `/oh-my-claudecode:ralph`, `/oh-my-claudecode:ultrawork`, and `/oh-my-claudecode:plan` work. Note: `/oh-my-claudecode:planner` now redirects to `/oh-my-claudecode:plan`.
 
 **Q: How do I know what Claude is doing?**
 A: Claude announces major behaviors: "I'm activating ralph-loop..." or set up `/oh-my-claudecode:hud` for real-time status.

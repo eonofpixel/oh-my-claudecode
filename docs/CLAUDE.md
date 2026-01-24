@@ -252,6 +252,7 @@ User says "stop", "cancel", "abort" → Invoke unified `cancel` skill (automatic
 | `research` | Parallel scientist orchestration | "research", "analyze data", "statistics" | `/oh-my-claudecode:research` |
 | `tdd` | TDD enforcement: test-first development | "tdd", "test first" | `/oh-my-claudecode:tdd` |
 | `mcp-setup` | Configure MCP servers for extended capabilities | "setup mcp", "configure mcp" | `/oh-my-claudecode:mcp-setup` |
+| `learn-about-omc` | Usage pattern analysis | - | `/oh-my-claudecode:learn-about-omc` |
 
 ### All 32 Agents
 

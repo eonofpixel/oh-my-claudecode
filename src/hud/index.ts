@@ -124,7 +124,8 @@ async function getTokenTrackerFallback(
 async function calculateSessionHealth(
   sessionStart: Date | undefined,
   contextPercent: number,
-  stdin: StatuslineStdin
+  stdin: StatuslineStdin,
+  aggregatedTokens?: { inputTokens: number; outputTokens: number; cacheCreationTokens: number; cacheReadTokens: number }
 ): Promise<SessionHealth | null> {
   // Calculate duration (use 0 if no session start)
   const durationMs = sessionStart ? Date.now() - sessionStart.getTime() : 0;
@@ -137,41 +138,53 @@ async function calculateSessionHealth(
     health = 'warning';
   }
 
-  // Get LIVE token data from stdin (not from analytics files)
+  // Get LIVE token data from stdin (baseline - main session only)
   const usage = stdin.context_window?.current_usage;
-  const inputTokens = usage?.input_tokens ?? 0;
-  const cacheCreationTokens = usage?.cache_creation_input_tokens ?? 0;
-  const cacheReadTokens = usage?.cache_read_input_tokens ?? 0;
+  const stdinInputTokens = usage?.input_tokens ?? 0;
+  const stdinCacheCreationTokens = usage?.cache_creation_input_tokens ?? 0;
+  const stdinCacheReadTokens = usage?.cache_read_input_tokens ?? 0;
+
+  // Add aggregated tokens from transcript (includes agent tokens)
+  const inputTokens = stdinInputTokens + (aggregatedTokens?.inputTokens ?? 0);
+  const outputTokens = aggregatedTokens?.outputTokens ?? 0;
+  const cacheCreationTokens = stdinCacheCreationTokens + (aggregatedTokens?.cacheCreationTokens ?? 0);
+  const cacheReadTokens = stdinCacheReadTokens + (aggregatedTokens?.cacheReadTokens ?? 0);
 
   // Debug: log token data if OMC_DEBUG is set
   if (process.env.OMC_DEBUG) {
-    console.error('[HUD DEBUG] current_usage:', JSON.stringify(usage));
-    console.error('[HUD DEBUG] tokens:', { inputTokens, cacheCreationTokens, cacheReadTokens });
+    console.error('[HUD DEBUG] stdin current_usage:', JSON.stringify(usage));
+    console.error('[HUD DEBUG] aggregated tokens:', JSON.stringify(aggregatedTokens));
+    console.error('[HUD DEBUG] combined tokens:', { inputTokens, outputTokens, cacheCreationTokens, cacheReadTokens });
   }
 
-  // Calculate totals from live data
-  const totalTokens = inputTokens + cacheCreationTokens + cacheReadTokens;
+  // Calculate totals from combined data
+  const totalTokens = inputTokens + outputTokens + cacheCreationTokens + cacheReadTokens;
   const totalInputForCache = inputTokens + cacheCreationTokens;
   const cacheHitRate = totalInputForCache > 0
     ? (cacheReadTokens / (totalInputForCache + cacheReadTokens)) * 100
     : 0;
 
-  // Estimate output tokens and cost
+  // Calculate cost using actual or estimated output tokens
   let sessionCost = 0;
   let costPerHour = 0;
-  const isEstimated = true;
+  // If we have actual output tokens from transcript, not estimated; otherwise estimate
+  const isEstimated = !aggregatedTokens || aggregatedTokens.outputTokens === 0;
 
   try {
     const { calculateCost } = await import('../analytics/cost-estimator.js');
     const { estimateOutputTokens } = await import('../analytics/output-estimator.js');
 
     const modelName = stdin.model?.id ?? stdin.model?.display_name ?? 'claude-sonnet-4.5';
-    const estimatedOutput = estimateOutputTokens(inputTokens, modelName);
+
+    // Use actual output tokens if available, otherwise estimate
+    const outputTokensToUse = outputTokens > 0
+      ? outputTokens
+      : estimateOutputTokens(inputTokens, modelName);
 
     const costResult = calculateCost({
       modelName,
       inputTokens,
-      outputTokens: estimatedOutput,
+      outputTokens: outputTokensToUse,
       cacheCreationTokens,
       cacheReadTokens
     });
@@ -267,7 +280,8 @@ async function main(): Promise<void> {
       sessionHealth: await calculateSessionHealth(
         transcriptData.sessionStart,
         getContextPercent(stdin),
-        stdin
+        stdin,
+        transcriptData.aggregatedTokens
       )
     };
 

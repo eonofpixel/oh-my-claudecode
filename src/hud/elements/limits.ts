@@ -58,16 +58,21 @@ function formatResetTime(date: Date | null | undefined): string | null {
 /**
  * Render rate limits display.
  *
- * Format: 5h:45%(3h42m) wk:12%(2d5h)
+ * Format: 5h:45%(3h42m) wk:12%/S:45%(2d5h)
+ * Where S:45% is Sonnet-specific weekly usage
  */
 export function renderRateLimits(limits: RateLimits | null): string | null {
   if (!limits) return null;
 
   const fiveHour = Math.min(100, Math.max(0, Math.round(limits.fiveHourPercent)));
   const weekly = Math.min(100, Math.max(0, Math.round(limits.weeklyPercent)));
+  const sonnetWeekly = limits.sonnetWeeklyPercent != null
+    ? Math.min(100, Math.max(0, Math.round(limits.sonnetWeeklyPercent)))
+    : null;
 
   const fiveHourColor = getColor(fiveHour);
   const weeklyColor = getColor(weekly);
+  const sonnetColor = sonnetWeekly != null ? getColor(sonnetWeekly) : GREEN;
 
   // Format reset times
   const fiveHourReset = formatResetTime(limits.fiveHourResetsAt);
@@ -78,9 +83,18 @@ export function renderRateLimits(limits: RateLimits | null): string | null {
     ? `5h:${fiveHourColor}${fiveHour}%${RESET}${DIM}(${fiveHourReset})${RESET}`
     : `5h:${fiveHourColor}${fiveHour}%${RESET}`;
 
-  const weeklyPart = weeklyReset
-    ? `${DIM}wk:${RESET}${weeklyColor}${weekly}%${RESET}${DIM}(${weeklyReset})${RESET}`
-    : `${DIM}wk:${RESET}${weeklyColor}${weekly}%${RESET}`;
+  // Weekly part with Sonnet quota (compact inline format)
+  let weeklyPart: string;
+  if (sonnetWeekly != null) {
+    const weeklyDisplay = `${DIM}wk:${RESET}${weeklyColor}${weekly}%${RESET}`;
+    const sonnetDisplay = `${DIM}S:${RESET}${sonnetColor}${sonnetWeekly}%${RESET}`;
+    const resetDisplay = weeklyReset ? `${DIM}(${weeklyReset})${RESET}` : '';
+    weeklyPart = `${weeklyDisplay}/${sonnetDisplay}${resetDisplay}`;
+  } else {
+    weeklyPart = weeklyReset
+      ? `${DIM}wk:${RESET}${weeklyColor}${weekly}%${RESET}${DIM}(${weeklyReset})${RESET}`
+      : `${DIM}wk:${RESET}${weeklyColor}${weekly}%${RESET}`;
+  }
 
   return `${fiveHourPart} ${weeklyPart}`;
 }
@@ -88,16 +102,25 @@ export function renderRateLimits(limits: RateLimits | null): string | null {
 /**
  * Render compact rate limits (just percentages).
  *
- * Format: 45%/12%
+ * Format: 45%/12%/S:45%
+ * Where S:45% is Sonnet-specific weekly usage
  */
 export function renderRateLimitsCompact(limits: RateLimits | null): string | null {
   if (!limits) return null;
 
   const fiveHour = Math.min(100, Math.max(0, Math.round(limits.fiveHourPercent)));
   const weekly = Math.min(100, Math.max(0, Math.round(limits.weeklyPercent)));
+  const sonnetWeekly = limits.sonnetWeeklyPercent != null
+    ? Math.min(100, Math.max(0, Math.round(limits.sonnetWeeklyPercent)))
+    : null;
 
   const fiveHourColor = getColor(fiveHour);
   const weeklyColor = getColor(weekly);
+  const sonnetColor = sonnetWeekly != null ? getColor(sonnetWeekly) : GREEN;
+
+  if (sonnetWeekly != null) {
+    return `${fiveHourColor}${fiveHour}%${RESET}/${weeklyColor}${weekly}%${RESET}/${DIM}S:${RESET}${sonnetColor}${sonnetWeekly}%${RESET}`;
+  }
 
   return `${fiveHourColor}${fiveHour}%${RESET}/${weeklyColor}${weekly}%${RESET}`;
 }
@@ -105,7 +128,8 @@ export function renderRateLimitsCompact(limits: RateLimits | null): string | nul
 /**
  * Render rate limits with visual progress bars.
  *
- * Format: 5h:[████░░░░░░]45%(3h42m) wk:[█░░░░░░░░░]12%(2d5h)
+ * Format: 5h:[████░░░░]45%(3h42m) wk:[█░░░░░░░]12% S:[███░░░░]45%(2d5h)
+ * Where S:[███░░░░]45% is Sonnet-specific weekly usage bar
  */
 export function renderRateLimitsWithBar(
   limits: RateLimits | null,
@@ -115,9 +139,13 @@ export function renderRateLimitsWithBar(
 
   const fiveHour = Math.min(100, Math.max(0, Math.round(limits.fiveHourPercent)));
   const weekly = Math.min(100, Math.max(0, Math.round(limits.weeklyPercent)));
+  const sonnetWeekly = limits.sonnetWeeklyPercent != null
+    ? Math.min(100, Math.max(0, Math.round(limits.sonnetWeeklyPercent)))
+    : null;
 
   const fiveHourColor = getColor(fiveHour);
   const weeklyColor = getColor(weekly);
+  const sonnetColor = sonnetWeekly != null ? getColor(sonnetWeekly) : GREEN;
 
   // Build bars
   const fiveHourFilled = Math.round((fiveHour / 100) * barWidth);
@@ -137,9 +165,22 @@ export function renderRateLimitsWithBar(
     ? `5h:[${fiveHourBar}]${fiveHourColor}${fiveHour}%${RESET}${DIM}(${fiveHourReset})${RESET}`
     : `5h:[${fiveHourBar}]${fiveHourColor}${fiveHour}%${RESET}`;
 
-  const weeklyPart = weeklyReset
-    ? `${DIM}wk:${RESET}[${weeklyBar}]${weeklyColor}${weekly}%${RESET}${DIM}(${weeklyReset})${RESET}`
-    : `${DIM}wk:${RESET}[${weeklyBar}]${weeklyColor}${weekly}%${RESET}`;
+  let weeklyPart: string;
+  if (sonnetWeekly != null) {
+    // Build Sonnet bar
+    const sonnetFilled = Math.round((sonnetWeekly / 100) * barWidth);
+    const sonnetEmpty = barWidth - sonnetFilled;
+    const sonnetBar = `${sonnetColor}${'█'.repeat(sonnetFilled)}${DIM}${'░'.repeat(sonnetEmpty)}${RESET}`;
+
+    const weeklyDisplay = `${DIM}wk:${RESET}[${weeklyBar}]${weeklyColor}${weekly}%${RESET}`;
+    const sonnetDisplay = `${DIM}S:${RESET}[${sonnetBar}]${sonnetColor}${sonnetWeekly}%${RESET}`;
+    const resetDisplay = weeklyReset ? `${DIM}(${weeklyReset})${RESET}` : '';
+    weeklyPart = `${weeklyDisplay} ${sonnetDisplay}${resetDisplay}`;
+  } else {
+    weeklyPart = weeklyReset
+      ? `${DIM}wk:${RESET}[${weeklyBar}]${weeklyColor}${weekly}%${RESET}${DIM}(${weeklyReset})${RESET}`
+      : `${DIM}wk:${RESET}[${weeklyBar}]${weeklyColor}${weekly}%${RESET}`;
+  }
 
   return `${fiveHourPart} ${weeklyPart}`;
 }

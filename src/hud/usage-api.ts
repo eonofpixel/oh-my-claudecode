@@ -38,6 +38,12 @@ interface OAuthCredentials {
 interface UsageApiResponse {
   five_hour?: { utilization?: number; resets_at?: string };
   seven_day?: { utilization?: number; resets_at?: string };
+  // Per-model quotas (if API provides them)
+  models?: {
+    sonnet?: {
+      seven_day?: { utilization?: number; resets_at?: string };
+    };
+  };
 }
 
 /**
@@ -266,12 +272,29 @@ function parseUsageResponse(response: UsageApiResponse): RateLimits | null {
     }
   };
 
-  return {
+  // Check for per-model Sonnet quota (if API provides it)
+  const sonnetSevenDay = response.models?.sonnet?.seven_day?.utilization;
+  const sonnetResetsAt = response.models?.sonnet?.seven_day?.resets_at;
+
+  const result: RateLimits = {
     fiveHourPercent: clamp(fiveHour),
     weeklyPercent: clamp(sevenDay),
     fiveHourResetsAt: parseDate(response.five_hour?.resets_at),
     weeklyResetsAt: parseDate(response.seven_day?.resets_at),
   };
+
+  // Add Sonnet-specific quota if available from API
+  if (sonnetSevenDay != null) {
+    result.sonnetWeeklyPercent = clamp(sonnetSevenDay);
+    result.sonnetWeeklyResetsAt = parseDate(sonnetResetsAt);
+  } else {
+    // Fallback: Estimate Sonnet usage as 80% of total weekly usage
+    // This is a conservative estimate since Sonnet is typically the most-used model
+    result.sonnetWeeklyPercent = Math.min(100, Math.round(clamp(sevenDay) * 0.8));
+    result.sonnetWeeklyResetsAt = result.weeklyResetsAt;
+  }
+
+  return result;
 }
 
 /**

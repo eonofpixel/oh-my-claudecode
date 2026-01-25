@@ -13,7 +13,7 @@
 import { createReadStream, existsSync, statSync, openSync, readSync, closeSync } from 'fs';
 import { createInterface } from 'readline';
 import { basename } from 'path';
-import type { TranscriptData, ActiveAgent, TodoItem, SkillInvocation, PendingPermission, ThinkingState } from './types.js';
+import type { TranscriptData, ActiveAgent, TodoItem, SkillInvocation, PendingPermission, ThinkingState, AggregatedTokens } from './types.js';
 
 // Performance constants
 const MAX_TAIL_BYTES = 512 * 1024; // 500KB - enough for recent activity
@@ -69,6 +69,12 @@ export async function parseTranscript(
     agents: [],
     todos: [],
     lastActivatedSkill: undefined,
+    aggregatedTokens: {
+      inputTokens: 0,
+      outputTokens: 0,
+      cacheCreationTokens: 0,
+      cacheReadTokens: 0,
+    },
   };
 
   if (!transcriptPath || !existsSync(transcriptPath)) {
@@ -266,6 +272,17 @@ function processEntry(
     result.sessionStart = timestamp;
   }
 
+  // Aggregate token usage from message.usage
+  if (entry.message?.usage) {
+    const usage = entry.message.usage;
+    if (result.aggregatedTokens) {
+      result.aggregatedTokens.inputTokens += usage.input_tokens || 0;
+      result.aggregatedTokens.outputTokens += usage.output_tokens || 0;
+      result.aggregatedTokens.cacheCreationTokens += usage.cache_creation_input_tokens || 0;
+      result.aggregatedTokens.cacheReadTokens += usage.cache_read_input_tokens || 0;
+    }
+  }
+
   const content = entry.message?.content;
   if (!content || !Array.isArray(content)) return;
 
@@ -407,6 +424,12 @@ interface TranscriptEntry {
   timestamp?: string;
   message?: {
     content?: ContentBlock[];
+    usage?: {
+      input_tokens?: number;
+      output_tokens?: number;
+      cache_creation_input_tokens?: number;
+      cache_read_input_tokens?: number;
+    };
   };
 }
 

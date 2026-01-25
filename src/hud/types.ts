@@ -95,6 +95,13 @@ export interface ThinkingState {
   lastSeen?: Date;
 }
 
+export interface AggregatedTokens {
+  inputTokens: number;
+  outputTokens: number;
+  cacheCreationTokens: number;
+  cacheReadTokens: number;
+}
+
 export interface SessionHealth {
   durationMinutes: number;
   messageCount: number;
@@ -118,6 +125,7 @@ export interface TranscriptData {
   lastActivatedSkill?: SkillInvocation;
   pendingPermission?: PendingPermission;
   thinkingState?: ThinkingState;
+  aggregatedTokens?: AggregatedTokens;
 }
 
 // ============================================================================
@@ -149,14 +157,19 @@ export interface PrdStateForHud {
 // ============================================================================
 
 export interface RateLimits {
-  /** 5-hour rolling window usage percentage (0-100) */
+  /** 5-hour rolling window usage percentage (0-100) - all models combined */
   fiveHourPercent: number;
-  /** Weekly usage percentage (0-100) */
+  /** Weekly usage percentage (0-100) - all models combined */
   weeklyPercent: number;
   /** When the 5-hour limit resets (null if unavailable) */
   fiveHourResetsAt?: Date | null;
   /** When the weekly limit resets (null if unavailable) */
   weeklyResetsAt?: Date | null;
+
+  /** Sonnet-specific weekly usage percentage (0-100), if available or estimated */
+  sonnetWeeklyPercent?: number;
+  /** Sonnet weekly reset time (typically same as overall weekly reset) */
+  sonnetWeeklyResetsAt?: Date | null;
 }
 
 export interface HudRenderContext {

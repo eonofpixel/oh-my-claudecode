@@ -6,10 +6,41 @@ This guide covers all migration paths for oh-my-claudecode. Find your current ve
 
 ## Table of Contents
 
+- [v3.5.3 → v3.5.5: Test Fixes & Cleanup](#v353--v355-test-fixes--cleanup)
 - [v3.5.2 → v3.5.3: Skill Consolidation](#v35--v36-skill-consolidation)
 - [v2.x → v3.0: Package Rename & Auto-Activation](#v2x--v30-package-rename--auto-activation)
 - [v3.0 → v3.1: Notepad Wisdom & Enhanced Features](#v30--v31-notepad-wisdom--enhanced-features)
 - [v3.x → v4.0: Major Architecture Overhaul](#v3x--v40-major-architecture-overhaul)
+
+---
+
+## v3.5.3 → v3.5.5: Test Fixes & Cleanup
+
+### TL;DR
+
+Maintenance release fixing test suite issues and continuing skill consolidation from v3.5.3.
+
+### What Changed
+
+**Test Fixes:**
+- Delegation-enforcer tests marked as skipped (implementation pending)
+- Analytics expectations corrected for agent attribution
+- All remaining tests now pass cleanly
+
+**Skill Consolidation:**
+- Continued cleanup from v3.5.3
+- Removed deprecated `cancel-*` skills (use `/cancel` instead)
+- Final skill count: 35 core skills
+
+### Migration Steps
+
+1. **No breaking changes** - All functionality preserved
+2. **Test suite** now runs cleanly with `npm run test:run`
+3. **Deprecated skills** removed (already replaced in v3.5.3)
+
+### For Developers
+
+If you were depending on deprecated `cancel-*` skills, update to use the unified `/cancel` command which auto-detects the active mode.
 
 ---
 

@@ -184,9 +184,9 @@ HUD STATUSLINE:
 The status bar now shows OMC state. Restart Claude Code to see it.
 
 CLI ANALYTICS (if installed):
+- omc           - Full dashboard (stats + agents + cost)
 - omc stats     - View token usage and costs
 - omc agents    - See agent breakdown by cost
-- omc backfill  - Populate agent data from transcripts
 - omc tui       - Launch interactive TUI dashboard
 
 That's it! Just use Claude Code normally.
@@ -219,9 +219,9 @@ HUD STATUSLINE:
 The status bar now shows OMC state. Restart Claude Code to see it.
 
 CLI ANALYTICS (if installed):
+- omc           - Full dashboard (stats + agents + cost)
 - omc stats     - View token usage and costs
 - omc agents    - See agent breakdown by cost
-- omc backfill  - Populate agent data from transcripts
 - omc tui       - Launch interactive TUI dashboard
 
 Your workflow won't break - it just got easier!

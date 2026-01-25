@@ -76,12 +76,20 @@ async function checkIfBackfillNeeded(): Promise<boolean> {
   }
 }
 
-async function runQuickBackfill(): Promise<void> {
+async function runQuickBackfill(silent: boolean = false): Promise<void> {
   const { BackfillEngine } = await import('../analytics/backfill-engine.js');
   const engine = new BackfillEngine();
   const result = await engine.run({ verbose: false });
-  if (result.entriesAdded > 0) {
+  if (result.entriesAdded > 0 && !silent) {
     console.log(chalk.green(`Backfilled ${result.entriesAdded} entries in ${result.timeElapsed}ms`));
+  }
+}
+
+// Auto-backfill before analytics commands
+async function ensureBackfillDone(): Promise<void> {
+  const shouldBackfill = await checkIfBackfillNeeded();
+  if (shouldBackfill) {
+    await runQuickBackfill(true); // Silent backfill for subcommands
   }
 }
 
@@ -164,19 +172,23 @@ program
   .description('Show aggregate statistics (or specific session with --session)')
   .option('--json', 'Output as JSON')
   .option('--session <id>', 'Show stats for specific session (defaults to aggregate)')
-  .action(statsCommand);
+  .action(async (options) => {
+    await ensureBackfillDone();
+    await statsCommand(options);
+  });
 
 // Cost command
 program
   .command('cost [period]')
   .description('Generate cost report (period: daily, weekly, monthly)')
   .option('--json', 'Output as JSON')
-  .action((period = 'monthly', options) => {
+  .action(async (period = 'monthly', options) => {
     if (!['daily', 'weekly', 'monthly'].includes(period)) {
       console.error('Invalid period. Use: daily, weekly, or monthly');
       process.exit(1);
     }
-    costCommand(period as 'daily' | 'weekly' | 'monthly', options);
+    await ensureBackfillDone();
+    await costCommand(period as 'daily' | 'weekly' | 'monthly', options);
   });
 
 // Sessions command
@@ -185,8 +197,9 @@ program
   .description('View session history')
   .option('--json', 'Output as JSON')
   .option('--limit <number>', 'Limit number of sessions', '10')
-  .action(options => {
-    sessionsCommand({ ...options, limit: parseInt(options.limit) });
+  .action(async (options) => {
+    await ensureBackfillDone();
+    await sessionsCommand({ ...options, limit: parseInt(options.limit) });
   });
 
 // Agents command
@@ -195,8 +208,9 @@ program
   .description('Show agent usage breakdown')
   .option('--json', 'Output as JSON')
   .option('--limit <number>', 'Limit number of agents', '10')
-  .action(options => {
-    agentsCommand({ ...options, limit: parseInt(options.limit) });
+  .action(async (options) => {
+    await ensureBackfillDone();
+    await agentsCommand({ ...options, limit: parseInt(options.limit) });
   });
 
 // Export command
@@ -225,10 +239,10 @@ program
     cleanupCommand({ ...options, retention: parseInt(options.retention) });
   });
 
-// Backfill command
+// Backfill command (deprecated - auto-backfill runs on every command)
 program
   .command('backfill')
-  .description('Backfill agent data from Claude Code transcripts')
+  .description('[DEPRECATED] Backfill now runs automatically. Use for manual re-sync only.')
   .option('--project <path>', 'Filter to specific project path')
   .option('--from <date>', 'Start date (ISO format: YYYY-MM-DD)')
   .option('--to <date>', 'End date (ISO format: YYYY-MM-DD)')
@@ -236,7 +250,13 @@ program
   .option('--reset', 'Clear deduplication index and re-process all transcripts')
   .option('--verbose', 'Show detailed progress')
   .option('--json', 'Output as JSON')
-  .action(backfillCommand);
+  .action(async (options) => {
+    if (!options.reset && !options.project && !options.from && !options.to) {
+      console.log(chalk.yellow('Note: Backfill now runs automatically with every omc command.'));
+      console.log(chalk.gray('Use --reset to force full re-sync, or --project/--from/--to for filtered backfill.\n'));
+    }
+    await backfillCommand(options);
+  });
 
 // TUI command
 program

@@ -14,8 +14,10 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
+import * as fs from 'fs/promises';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { homedir } from 'os';
 import {
   loadConfig,
   getConfigPaths,
@@ -40,6 +42,11 @@ import { agentsCommand } from './commands/agents.js';
 import { exportCommand } from './commands/export.js';
 import { cleanupCommand } from './commands/cleanup.js';
 import { backfillCommand } from './commands/backfill.js';
+import {
+  launchTokscaleTUI,
+  isTokscaleCLIAvailable,
+  getInstallInstructions
+} from './utils/tokscale-launcher.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -53,41 +60,30 @@ try {
   // Use default version
 }
 
-/**
- * Auto-backfill analytics on CLI startup (once per 24 hours)
- */
-async function maybeAutoBackfill(): Promise<void> {
-  const BACKFILL_INTERVAL_MS = 24 * 60 * 60 * 1000; // 24 hours
+const program = new Command();
 
+// Helper functions for auto-backfill
+async function checkIfBackfillNeeded(): Promise<boolean> {
+  const tokenLogPath = join(homedir(), '.omc', 'state', 'token-tracking.jsonl');
   try {
-    // Check last backfill timestamp
-    const { readState, writeState, StateLocation } = await import('../features/state-manager/index.js');
-    const lastBackfill = readState<{ timestamp: string }>('last-backfill', StateLocation.GLOBAL);
-
-    const now = Date.now();
-    if (lastBackfill.exists && lastBackfill.data) {
-      const lastTime = new Date(lastBackfill.data.timestamp).getTime();
-      if (now - lastTime < BACKFILL_INTERVAL_MS) {
-        return; // Skip, too recent
-      }
-    }
-
-    // Run silent backfill
-    const { BackfillEngine } = await import('../analytics/backfill-engine.js');
-    const engine = new BackfillEngine();
-    await engine.run({ dryRun: false, verbose: false });
-
-    // Update timestamp
-    writeState('last-backfill', { timestamp: new Date().toISOString() }, StateLocation.GLOBAL);
+    await fs.access(tokenLogPath);
+    const stats = await fs.stat(tokenLogPath);
+    // Backfill if file is older than 1 hour or very small
+    const ageMs = Date.now() - stats.mtimeMs;
+    return stats.size < 100 || ageMs > 3600000;
   } catch {
-    // Silent fail - don't break CLI
+    return true; // File doesn't exist
   }
 }
 
-// Auto-backfill on startup (silent, once per 24 hours)
-maybeAutoBackfill().catch(() => {});
-
-const program = new Command();
+async function runQuickBackfill(): Promise<void> {
+  const { BackfillEngine } = await import('../analytics/backfill-engine.js');
+  const engine = new BackfillEngine();
+  const result = await engine.run({ verbose: false });
+  if (result.entriesAdded > 0) {
+    console.log(chalk.green(`Backfilled ${result.entriesAdded} entries in ${result.timeElapsed}ms`));
+  }
+}
 
 // Display enhanced banner using gradient-string (loaded dynamically)
 async function displayAnalyticsBanner() {
@@ -114,6 +110,13 @@ async function displayAnalyticsBanner() {
 async function defaultAction() {
   await displayAnalyticsBanner();
 
+  // Check if we need to backfill for agent data
+  const shouldAutoBackfill = await checkIfBackfillNeeded();
+  if (shouldAutoBackfill) {
+    console.log(chalk.yellow('First run detected - backfilling agent data...'));
+    await runQuickBackfill();
+  }
+
   // Show aggregate session stats
   console.log(chalk.bold('📊 Aggregate Session Statistics'));
   console.log(chalk.gray('─'.repeat(50)));
@@ -135,6 +138,14 @@ async function defaultAction() {
 
   console.log('\n');
   console.log(chalk.dim('Run with --help to see all available commands'));
+
+  // Show tokscale hint if available
+  const tuiAvailable = await isTokscaleCLIAvailable();
+
+  if (tuiAvailable) {
+    console.log('');
+    console.log(chalk.dim('Tip: Run `omc tui` for an interactive token visualization dashboard'));
+  }
 }
 
 program
@@ -217,7 +228,7 @@ program
 // Backfill command
 program
   .command('backfill')
-  .description('Backfill analytics from historical Claude Code transcripts')
+  .description('Backfill agent data from Claude Code transcripts')
   .option('--project <path>', 'Filter to specific project path')
   .option('--from <date>', 'Start date (ISO format: YYYY-MM-DD)')
   .option('--to <date>', 'End date (ISO format: YYYY-MM-DD)')
@@ -226,6 +237,42 @@ program
   .option('--verbose', 'Show detailed progress')
   .option('--json', 'Output as JSON')
   .action(backfillCommand);
+
+// TUI command
+program
+  .command('tui')
+  .description('Launch tokscale interactive TUI for token visualization')
+  .option('--light', 'Use light theme')
+  .option('--models', 'Show models view')
+  .option('--daily', 'Show daily view')
+  .option('--stats', 'Show stats view')
+  .option('--no-claude', 'Show all providers (not just Claude)')
+  .action(async (options) => {
+    const available = await isTokscaleCLIAvailable();
+
+    if (!available) {
+      console.log(chalk.yellow('tokscale is not installed.'));
+      console.log(getInstallInstructions());
+      process.exit(1);
+    }
+
+    const view = options.models ? 'models'
+               : options.daily ? 'daily'
+               : options.stats ? 'stats'
+               : 'overview';
+
+    try {
+      await launchTokscaleTUI({
+        light: options.light,
+        view,
+        claude: options.claude
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error(chalk.red(`Failed to launch TUI: ${message}`));
+      process.exit(1);
+    }
+  });
 
 /**
  * Init command - Initialize configuration

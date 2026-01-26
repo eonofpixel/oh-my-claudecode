@@ -344,6 +344,7 @@ export function getAgentDefinitions(overrides?: Partial<Record<string, Partial<A
   tools: string[];
   model?: ModelType;
   defaultModel?: ModelType;
+  executionType?: 'claude' | 'codex';
 }> {
   const agents = {
     // Base agents (from individual files)
@@ -386,7 +387,7 @@ export function getAgentDefinitions(overrides?: Partial<Record<string, Partial<A
     'code-reviewer-low': codeReviewerLowAgent
   };
 
-  const result: Record<string, { description: string; prompt: string; tools: string[]; model?: ModelType; defaultModel?: ModelType }> = {};
+  const result: Record<string, { description: string; prompt: string; tools: string[]; model?: ModelType; defaultModel?: ModelType; executionType?: 'claude' | 'codex' }> = {};
 
   for (const [name, config] of Object.entries(agents)) {
     const override = overrides?.[name];
@@ -395,7 +396,8 @@ export function getAgentDefinitions(overrides?: Partial<Record<string, Partial<A
       prompt: override?.prompt ?? config.prompt,
       tools: override?.tools ?? config.tools,
       model: (override?.model ?? config.model) as ModelType | undefined,
-      defaultModel: (override?.defaultModel ?? config.defaultModel) as ModelType | undefined
+      defaultModel: (override?.defaultModel ?? config.defaultModel) as ModelType | undefined,
+      executionType: (override?.executionType ?? config.executionType) as 'claude' | 'codex' | undefined
     };
   }
 

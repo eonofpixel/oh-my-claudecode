@@ -75,6 +75,13 @@ export function enforceModel(agentInput: AgentInput): EnforcementResult {
     throw new Error(`No default model defined for agent: ${agentType}`);
   }
 
+  // Warn if agent has codex execution type (not yet implemented)
+  if (agentDef.executionType === 'codex') {
+    console.warn(
+      `[OMC] Warning: Agent "${agentType}" has executionType='codex' but Codex routing is not yet implemented. Falling back to Claude SDK.`
+    );
+  }
+
   // Convert ModelType to SDK model type
   const sdkModel = convertToSdkModel(agentDef.model);
 

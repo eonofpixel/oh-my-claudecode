@@ -105,6 +105,9 @@ function parseCodexJsonlOutput(stdout: string): { output: string; events: string
         finalOutput = event.content;
       } else if (event.type === 'response' && event.text) {
         finalOutput = event.text;
+      } else if (event.type === 'item.completed' && event.item?.text) {
+        // Handle Codex CLI item.completed events
+        finalOutput = event.item.text;
       } else if (event.message?.content) {
         // Handle nested message format
         if (Array.isArray(event.message.content)) {

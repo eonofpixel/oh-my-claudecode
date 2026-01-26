@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "codex": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["/home/bellman/Workspace/oh-my-claudecode-codex-agents/scripts/codex-mcp-server.mjs"],
+      "env": {}
+    }
+  }
+}

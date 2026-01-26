@@ -81,6 +81,24 @@ let currentCwd: string | null = null;
 let cleanupIntervalHandle: ReturnType<typeof setInterval> | null = null;
 
 /**
+ * Clean up resources on initialization failure
+ * Called when startSwarm fails after partial initialization
+ */
+function cleanupOnFailure(cwd: string): void {
+  // Stop cleanup timer if started
+  if (cleanupIntervalHandle) {
+    clearInterval(cleanupIntervalHandle);
+    cleanupIntervalHandle = null;
+  }
+  // Close database
+  closeDb();
+  // Remove marker file
+  removeModeMarker('swarm', cwd);
+  // Reset state
+  currentCwd = null;
+}
+
+/**
  * Start a new swarm session
  *
  * Initializes the SQLite database, creates the task pool,
@@ -136,6 +154,7 @@ export async function startSwarm(config: SwarmConfig): Promise<boolean> {
   const sessionId = randomUUID();
   if (!initSession(sessionId, agentCount)) {
     console.error('Failed to initialize swarm session');
+    cleanupOnFailure(cwd);
     return false;
   }
 
@@ -147,6 +166,7 @@ export async function startSwarm(config: SwarmConfig): Promise<boolean> {
 
   if (!addTasks(taskRecords)) {
     console.error('Failed to add tasks to pool');
+    cleanupOnFailure(cwd);
     return false;
   }
 

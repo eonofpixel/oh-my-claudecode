@@ -89,7 +89,7 @@ export function claimTask(agentId: string): ClaimResult {
       } as ClaimResult;
     });
 
-    return claimTransaction();
+    return claimTransaction.immediate();
   } catch (error) {
     return {
       success: false,
@@ -141,7 +141,7 @@ export function releaseTask(agentId: string, taskId: string): boolean {
       return true;
     });
 
-    return releaseTransaction();
+    return releaseTransaction.immediate();
   } catch (error) {
     console.error('Failed to release task:', error);
     return false;
@@ -189,7 +189,7 @@ export function completeTask(agentId: string, taskId: string, result?: string): 
       return true;
     });
 
-    return completeTransaction();
+    return completeTransaction.immediate();
   } catch (error) {
     console.error('Failed to complete task:', error);
     return false;
@@ -237,7 +237,7 @@ export function failTask(agentId: string, taskId: string, error: string): boolea
       return true;
     });
 
-    return failTransaction();
+    return failTransaction.immediate();
   } catch (error) {
     console.error('Failed to fail task:', error);
     return false;
@@ -334,7 +334,7 @@ export function cleanupStaleClaims(leaseTimeout: number = DEFAULT_SWARM_CONFIG.l
       return staleTasks.length;
     });
 
-    return cleanupTransaction();
+    return cleanupTransaction.immediate();
   } catch (error) {
     console.error('Failed to cleanup stale claims:', error);
     return 0;
@@ -510,7 +510,7 @@ export function reclaimFailedTask(agentId: string, taskId: string): ClaimResult 
       } as ClaimResult;
     });
 
-    return reclaimTransaction();
+    return reclaimTransaction.immediate();
   } catch (error) {
     return {
       success: false,

@@ -16,6 +16,14 @@ import type { ExecutionMode, ModeConfig, ModeStatus, CanStartResult } from './ty
 export type { ExecutionMode, ModeConfig, ModeStatus, CanStartResult } from './types.js';
 
 /**
+ * Stale marker threshold (1 hour)
+ * Markers older than this are auto-removed to prevent crashed sessions from blocking indefinitely.
+ * NOTE: We cannot check database activity here due to circular dependency constraints.
+ * Legitimate long-running swarms (>1 hour) may have markers removed - acceptable trade-off.
+ */
+export const STALE_MARKER_THRESHOLD = 60 * 60 * 1000; // 1 hour in milliseconds
+
+/**
  * Mode configuration registry
  *
  * Maps each mode to its state file location and detection method.
@@ -162,7 +170,29 @@ function isSqliteModeActive(cwd: string, mode: ExecutionMode): boolean {
 
   // Check marker file first (authoritative)
   if (markerPath && existsSync(markerPath)) {
-    return true;
+    try {
+      const content = readFileSync(markerPath, 'utf-8');
+      const marker = JSON.parse(content);
+
+      // Check if marker is stale (older than 1 hour)
+      // NOTE: We cannot check database activity here due to circular dependency constraints.
+      // This means legitimate long-running swarms (>1 hour) may have their markers removed.
+      // This is a deliberate trade-off to prevent crashed swarms from blocking indefinitely.
+      if (marker.startedAt) {
+        const startTime = new Date(marker.startedAt).getTime();
+        const age = Date.now() - startTime;
+
+        if (age > STALE_MARKER_THRESHOLD) {
+          console.warn(`Stale ${mode} marker detected (${Math.round(age / 60000)} min old). Auto-removing.`);
+          unlinkSync(markerPath);
+          return false;
+        }
+      }
+
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   // Fallback: check if database file exists (may have stale data)
@@ -428,5 +458,29 @@ export function readModeMarker(
     return JSON.parse(content);
   } catch {
     return null;
+  }
+}
+
+/**
+ * Force remove a marker file regardless of staleness
+ * Used for manual cleanup by users
+ *
+ * @param mode - The mode to clean up
+ * @param cwd - Working directory
+ */
+export function forceRemoveMarker(mode: ExecutionMode, cwd: string): boolean {
+  const markerPath = getMarkerFilePath(cwd, mode);
+  if (!markerPath) {
+    return true; // No marker to remove
+  }
+
+  try {
+    if (existsSync(markerPath)) {
+      unlinkSync(markerPath);
+    }
+    return true;
+  } catch (error) {
+    console.error(`Failed to force remove marker file for ${mode}:`, error);
+    return false;
   }
 }

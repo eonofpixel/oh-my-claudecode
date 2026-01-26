@@ -241,14 +241,14 @@ function claimTask(agentId: string): ClaimResult {
     ).run(agentId, Date.now(), task.id);
 
     return { success: true, taskId: task.id, description: task.description };
-  });
+  }).immediate();  // Explicitly acquire RESERVED lock for immediate transaction
 
   return claimTransaction();  // Atomic execution
 }
 ```
 
 **Why SQLite Transactions Work:**
-- `db.transaction()` uses `IMMEDIATE` locking
+- Transactions are called with `.immediate()` to acquire RESERVED lock
 - Prevents other agents from modifying rows between SELECT and UPDATE
 - All-or-nothing atomicity: claim succeeds completely or fails completely
 - No race conditions, no lost updates
@@ -282,7 +282,7 @@ function cleanupStaleClaims(leaseTimeout: number = 5 * 60 * 1000) {
     }
 
     return staleTasks.length;
-  });
+  }).immediate();  // Explicitly acquire RESERVED lock for immediate transaction
 
   return cleanupTransaction();
 }

@@ -75,6 +75,9 @@ export async function startUltrapilot(
 
   // Initialize state
   const state = initUltrapilot(cwd, task, subtasks, undefined, mergedConfig);
+  if (!state) {
+    throw new Error('Failed to initialize ultrapilot: another mode is active');
+  }
 
   return state;
 }

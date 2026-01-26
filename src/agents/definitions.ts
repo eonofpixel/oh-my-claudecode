@@ -22,12 +22,9 @@ export { designerAgent } from './designer.js';
 export { writerAgent } from './writer.js';
 export { visionAgent } from './vision.js';
 export { criticAgent } from './critic.js';
-export { architectCodexAgent } from './architect-codex.js';
-export { criticCodexAgent } from './critic-codex.js';
 export { analystAgent } from './analyst.js';
 export { executorAgent } from './executor.js';
 export { plannerAgent } from './planner.js';
-export { plannerCodexAgent } from './planner-codex.js';
 export { qaTesterAgent } from './qa-tester.js';
 export { scientistAgent } from './scientist.js';
 
@@ -39,12 +36,9 @@ import { designerAgent } from './designer.js';
 import { writerAgent } from './writer.js';
 import { visionAgent } from './vision.js';
 import { criticAgent } from './critic.js';
-import { architectCodexAgent } from './architect-codex.js';
-import { criticCodexAgent } from './critic-codex.js';
 import { analystAgent } from './analyst.js';
 import { executorAgent } from './executor.js';
 import { plannerAgent } from './planner.js';
-import { plannerCodexAgent } from './planner-codex.js';
 import { qaTesterAgent } from './qa-tester.js';
 import { scientistAgent } from './scientist.js';
 
@@ -344,7 +338,6 @@ export function getAgentDefinitions(overrides?: Partial<Record<string, Partial<A
   tools: string[];
   model?: ModelType;
   defaultModel?: ModelType;
-  executionType?: 'claude' | 'codex';
 }> {
   const agents = {
     // Base agents (from individual files)
@@ -355,12 +348,9 @@ export function getAgentDefinitions(overrides?: Partial<Record<string, Partial<A
     writer: writerAgent,
     vision: visionAgent,
     critic: criticAgent,
-    'critic-codex': criticCodexAgent,
-    'architect-codex': architectCodexAgent,
     analyst: analystAgent,
     executor: executorAgent,
     planner: plannerAgent,
-    'planner-codex': plannerCodexAgent,
     'qa-tester': qaTesterAgent,
     scientist: scientistAgent,
     // Tiered variants (prompts loaded from /agents/*.md)
@@ -387,7 +377,7 @@ export function getAgentDefinitions(overrides?: Partial<Record<string, Partial<A
     'code-reviewer-low': codeReviewerLowAgent
   };
 
-  const result: Record<string, { description: string; prompt: string; tools: string[]; model?: ModelType; defaultModel?: ModelType; executionType?: 'claude' | 'codex' }> = {};
+  const result: Record<string, { description: string; prompt: string; tools: string[]; model?: ModelType; defaultModel?: ModelType }> = {};
 
   for (const [name, config] of Object.entries(agents)) {
     const override = overrides?.[name];
@@ -396,8 +386,7 @@ export function getAgentDefinitions(overrides?: Partial<Record<string, Partial<A
       prompt: override?.prompt ?? config.prompt,
       tools: override?.tools ?? config.tools,
       model: (override?.model ?? config.model) as ModelType | undefined,
-      defaultModel: (override?.defaultModel ?? config.defaultModel) as ModelType | undefined,
-      executionType: (override?.executionType ?? config.executionType) as 'claude' | 'codex' | undefined
+      defaultModel: (override?.defaultModel ?? config.defaultModel) as ModelType | undefined
     };
   }
 

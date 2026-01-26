@@ -11,12 +11,6 @@ export interface AgentConfig {
   tools: string[];
   model?: ModelType;
   defaultModel?: ModelType;
-  /**
-   * Execution type for this agent
-   * - 'claude': Use Claude SDK native Task tool (default)
-   * - 'codex': Use Codex CLI for execution
-   */
-  executionType?: 'claude' | 'codex';
 }
 
 export interface PluginConfig {

@@ -9,8 +9,6 @@
  */
 
 import { getAgentDefinitions } from '../agents/definitions.js';
-import { isCodexAvailable } from '../agents/codex-executor.js';
-import { CodexNotAvailableError } from './codex-router.js';
 import type { ModelType } from '../shared/types.js';
 
 /**
@@ -75,16 +73,6 @@ export function enforceModel(agentInput: AgentInput): EnforcementResult {
 
   if (!agentDef.model) {
     throw new Error(`No default model defined for agent: ${agentType}`);
-  }
-
-  // Handle codex execution type - must use Codex or fail
-  if (agentDef.executionType === 'codex') {
-    if (!isCodexAvailable()) {
-      throw new CodexNotAvailableError(
-        `Agent "${agentType}" requires Codex execution but Codex is not available. Install Codex CLI to use this agent.`
-      );
-    }
-    // Codex is available - execution will be handled by codex-router
   }
 
   // Convert ModelType to SDK model type

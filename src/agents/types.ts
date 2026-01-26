@@ -74,12 +74,6 @@ export interface AgentConfig {
   model?: ModelType;
   /** Default model for this agent (explicit tier mapping) */
   defaultModel?: ModelType;
-  /**
-   * Execution type for this agent
-   * - 'claude': Use Claude SDK native Task tool (default)
-   * - 'codex': Use Codex CLI for execution
-   */
-  executionType?: 'claude' | 'codex';
   /** Optional metadata for dynamic prompt generation */
   metadata?: AgentPromptMetadata;
 }

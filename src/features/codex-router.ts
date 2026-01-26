@@ -26,14 +26,8 @@ export async function routeToCodex(
     );
   }
 
-  // Map model tier to Codex model
-  const modelMap: Record<ModelType, string> = {
-    opus: 'gpt-4o',
-    sonnet: 'gpt-4o-mini',
-    haiku: 'gpt-4o-mini',
-  };
-
-  const mappedModel = modelMap[model];
+  // All codex agents use SOTA model - no tiers
+  const mappedModel = 'gpt-5.2';
 
   const result = await executeCodex({
     prompt,

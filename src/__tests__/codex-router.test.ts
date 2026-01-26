@@ -42,52 +42,24 @@ describe('routeToCodex', () => {
     expect(codexExecutor.executeCodex).not.toHaveBeenCalled();
   });
 
-  it('should map opus to gpt-4o', async () => {
+  it('should always use gpt-5.2 (SOTA) regardless of input tier', async () => {
     vi.mocked(codexExecutor.isCodexAvailable).mockReturnValue(true);
     vi.mocked(codexExecutor.executeCodex).mockResolvedValue({
       success: true,
       output: 'test output',
     });
 
-    await routeToCodex('test-agent', 'test prompt', 'opus');
-
-    expect(codexExecutor.executeCodex).toHaveBeenCalledWith({
-      prompt: 'test prompt',
-      model: 'gpt-4o',
-    });
+    // Test all tiers map to gpt-5.2
+    for (const tier of ['opus', 'sonnet', 'haiku'] as const) {
+      await routeToCodex('test-agent', 'test prompt', tier);
+      expect(codexExecutor.executeCodex).toHaveBeenLastCalledWith({
+        prompt: 'test prompt',
+        model: 'gpt-5.2',
+      });
+    }
   });
 
-  it('should map sonnet to gpt-4o-mini', async () => {
-    vi.mocked(codexExecutor.isCodexAvailable).mockReturnValue(true);
-    vi.mocked(codexExecutor.executeCodex).mockResolvedValue({
-      success: true,
-      output: 'test output',
-    });
-
-    await routeToCodex('test-agent', 'test prompt', 'sonnet');
-
-    expect(codexExecutor.executeCodex).toHaveBeenCalledWith({
-      prompt: 'test prompt',
-      model: 'gpt-4o-mini',
-    });
-  });
-
-  it('should map haiku to gpt-4o-mini', async () => {
-    vi.mocked(codexExecutor.isCodexAvailable).mockReturnValue(true);
-    vi.mocked(codexExecutor.executeCodex).mockResolvedValue({
-      success: true,
-      output: 'test output',
-    });
-
-    await routeToCodex('test-agent', 'test prompt', 'haiku');
-
-    expect(codexExecutor.executeCodex).toHaveBeenCalledWith({
-      prompt: 'test prompt',
-      model: 'gpt-4o-mini',
-    });
-  });
-
-  it('should call executeCodex with correct parameters when Codex is available', async () => {
+  it('should call executeCodex with gpt-5.2 when Codex is available', async () => {
     vi.mocked(codexExecutor.isCodexAvailable).mockReturnValue(true);
     const mockResult = {
       success: true,
@@ -100,7 +72,7 @@ describe('routeToCodex', () => {
     expect(codexExecutor.isCodexAvailable).toHaveBeenCalled();
     expect(codexExecutor.executeCodex).toHaveBeenCalledWith({
       prompt: 'analyze this code',
-      model: 'gpt-4o',
+      model: 'gpt-5.2',
     });
     expect(result).toEqual(mockResult);
   });

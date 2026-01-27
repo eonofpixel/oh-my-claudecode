@@ -473,28 +473,26 @@ cmd_cleanup() {
 
     local cleaned=0
 
-    # Check PR sessions
-    psm_get_review_sessions | while IFS='|' read -r id pr_number project; do
+    # Check PR sessions (use process substitution to avoid subshell)
+    while IFS='|' read -r id pr_number project; do
         if [[ -z "$id" ]]; then continue; fi
 
-        local session_json=$(psm_get_session "$id")
         local repo=$(psm_get_project "$project" | cut -d'|' -f1)
 
         if [[ -n "$repo" && -n "$pr_number" ]]; then
-            local pr_state=$(gh pr view "$pr_number" --repo "$repo" --json merged,state 2>/dev/null | jq -r '.merged')
+            local pr_state=$(gh pr view "$pr_number" --repo "$repo" --json merged 2>/dev/null | jq -r '.merged')
             if [[ "$pr_state" == "true" ]]; then
                 log_info "PR #${pr_number} is merged - cleaning up $id"
                 cmd_kill "$id"
-                ((cleaned++)) || true
+                ((cleaned++))
             fi
         fi
-    done
+    done < <(psm_get_review_sessions)
 
-    # Check issue sessions
-    psm_get_fix_sessions | while IFS='|' read -r id issue_number project; do
+    # Check issue sessions (use process substitution to avoid subshell)
+    while IFS='|' read -r id issue_number project; do
         if [[ -z "$id" ]]; then continue; fi
 
-        local session_json=$(psm_get_session "$id")
         local repo=$(psm_get_project "$project" | cut -d'|' -f1)
 
         if [[ -n "$repo" && -n "$issue_number" ]]; then
@@ -502,12 +500,16 @@ cmd_cleanup() {
             if [[ "$issue_state" == "true" ]]; then
                 log_info "Issue #${issue_number} is closed - cleaning up $id"
                 cmd_kill "$id"
-                ((cleaned++)) || true
+                ((cleaned++))
             fi
         fi
-    done
+    done < <(psm_get_fix_sessions)
 
-    log_success "Cleanup complete"
+    if [[ $cleaned -eq 0 ]]; then
+        log_success "Cleanup complete - no sessions to clean"
+    else
+        log_success "Cleanup complete - removed $cleaned session(s)"
+    fi
 }
 
 # Command: status

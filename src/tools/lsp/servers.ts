@@ -90,6 +90,48 @@ export const LSP_SERVERS: Record<string, LspServerConfig> = {
     args: ['--stdio'],
     extensions: ['.yaml', '.yml'],
     installHint: 'npm install -g yaml-language-server'
+  },
+  php: {
+    name: 'Intelephense',
+    command: 'intelephense',
+    args: ['--stdio'],
+    extensions: ['.php', '.phtml'],
+    installHint: 'npm install -g intelephense'
+  },
+  ruby: {
+    name: 'Solargraph',
+    command: 'solargraph',
+    args: ['stdio'],
+    extensions: ['.rb', '.rake', '.gemspec'],
+    installHint: 'gem install solargraph'
+  },
+  lua: {
+    name: 'Lua Language Server',
+    command: 'lua-language-server',
+    args: [],
+    extensions: ['.lua'],
+    installHint: 'Install from https://github.com/LuaLS/lua-language-server or via package manager'
+  },
+  kotlin: {
+    name: 'Kotlin Language Server',
+    command: 'kotlin-language-server',
+    args: [],
+    extensions: ['.kt', '.kts'],
+    installHint: 'Install from https://github.com/fwcd/kotlin-language-server'
+  },
+  elixir: {
+    name: 'ElixirLS',
+    command: 'elixir-ls',
+    args: [],
+    extensions: ['.ex', '.exs'],
+    installHint: 'Install from https://github.com/elixir-lsp/elixir-ls'
+  },
+  csharp: {
+    name: 'OmniSharp',
+    command: 'OmniSharp',
+    args: ['-lsp'],
+    extensions: ['.cs'],
+    installHint: 'Install from https://github.com/OmniSharp/omnisharp-roslyn or via dotnet tool'
   }
 };
 
@@ -154,7 +196,18 @@ export function getServerForLanguage(language: string): LspServerConfig | null {
     'css': 'css',
     'scss': 'css',
     'less': 'css',
-    'yaml': 'yaml'
+    'yaml': 'yaml',
+    'php': 'php',
+    'ruby': 'ruby',
+    'rb': 'ruby',
+    'lua': 'lua',
+    'kotlin': 'kotlin',
+    'kt': 'kotlin',
+    'elixir': 'elixir',
+    'ex': 'elixir',
+    'csharp': 'csharp',
+    'cs': 'csharp',
+    'c#': 'csharp'
   };
 
   const serverKey = langMap[language.toLowerCase()];

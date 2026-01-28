@@ -441,13 +441,13 @@ export const lspCodeActionResolveTool: ToolDefinition<{
  */
 export const lspDiagnosticsDirectoryTool: ToolDefinition<{
   directory: z.ZodString;
-  strategy: z.ZodOptional<z.ZodEnum<['tsc', 'lsp', 'auto']>>;
+  strategy: z.ZodOptional<z.ZodEnum<['tsc', 'go', 'rust', 'python', 'lsp', 'auto']>>;
 }> = {
   name: 'lsp_diagnostics_directory',
-  description: 'Run project-level diagnostics on a directory using tsc --noEmit (preferred) or LSP iteration (fallback). Useful for checking the entire codebase for errors.',
+  description: 'Run project-level diagnostics on a directory. Auto-detects project type (TypeScript, Go, Rust, Python) or falls back to LSP. Strategies: tsc (TypeScript), go (go vet), rust (cargo check), python (mypy/pylint), lsp (Language Server), auto (default).',
   schema: {
     directory: z.string().describe('Project directory to check'),
-    strategy: z.enum(['tsc', 'lsp', 'auto']).optional().describe('Strategy to use: "tsc" (TypeScript compiler), "lsp" (Language Server iteration), or "auto" (default: auto-detect)')
+    strategy: z.enum(['tsc', 'go', 'rust', 'python', 'lsp', 'auto']).optional().describe('Strategy to use: "tsc" (TypeScript), "go" (go vet), "rust" (cargo check), "python" (mypy/pylint), "lsp" (Language Server), or "auto" (default: auto-detect from project files)')
   },
   handler: async (args) => {
     const { directory, strategy = 'auto' } = args;

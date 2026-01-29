@@ -2,12 +2,6 @@
 
 
 
-<h1 align="center">Claude-On-Steroids</h1>
-
-<p align="center">
-  <img src="assets/omc-character.jpg" alt="oh-my-claudecode" width="400" />
-</p>
-
 # oh-my-claudecode
 
 [![npm version](https://img.shields.io/npm/v/oh-my-claude-sisyphus?color=cb3837)](https://www.npmjs.com/package/oh-my-claude-sisyphus)
@@ -47,6 +41,13 @@ autopilot: build a REST API for managing tasks
 That's it. Everything else is automatic.
 
 ---
+
+<h1 align="center">Now, Your Claude Code Got Steroids.</h1>
+
+<p align="center">
+  <img src="assets/omc-character.jpg" alt="oh-my-claudecode" width="400" />
+</p>
+
 
 ## Why oh-my-claudecode?
 

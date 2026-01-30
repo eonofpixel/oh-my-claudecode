@@ -7,10 +7,22 @@ export type { TaskTool, BeadsContextConfig } from './types.js';
 export { BEADS_INSTRUCTIONS, BEADS_RUST_INSTRUCTIONS } from './constants.js';
 
 /**
+ * Instructions map for each task tool variant.
+ */
+const INSTRUCTIONS_MAP: Record<Exclude<TaskTool, 'builtin'>, string> = {
+  'beads': BEADS_INSTRUCTIONS,
+  'beads-rust': BEADS_RUST_INSTRUCTIONS,
+};
+
+/**
  * Get beads instructions for the given tool variant.
  */
-export function getBeadsInstructions(tool: 'beads' | 'beads-rust'): string {
-  return tool === 'beads' ? BEADS_INSTRUCTIONS : BEADS_RUST_INSTRUCTIONS;
+export function getBeadsInstructions(tool: Exclude<TaskTool, 'builtin'>): string {
+  const instructions = INSTRUCTIONS_MAP[tool];
+  if (!instructions) {
+    throw new Error(`Unknown task tool: ${tool}`);
+  }
+  return instructions;
 }
 
 /**
@@ -33,6 +45,12 @@ export function registerBeadsContext(sessionId: string): boolean {
   const config = getBeadsContextConfig();
 
   if (config.taskTool === 'builtin' || !config.injectInstructions) {
+    return false;
+  }
+
+  // Validate taskTool is a known value
+  if (!['beads', 'beads-rust'].includes(config.taskTool)) {
+    // Unknown tool value - don't inject wrong instructions
     return false;
   }
 

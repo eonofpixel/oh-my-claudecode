@@ -14,6 +14,7 @@ import { readFileSync, writeFileSync, existsSync, mkdirSync, unlinkSync } from '
 import { join, dirname } from 'path';
 import { homedir, tmpdir } from 'os';
 import { execSync } from 'child_process';
+import { TaskTool } from '../hooks/beads-context/types.js';
 
 /** GitHub repository information */
 export const REPO_OWNER = 'Yeachan-Heo';
@@ -37,7 +38,7 @@ export interface SisyphusConfig {
   /** Configuration schema version */
   configVersion?: number;
   /** Preferred task management tool */
-  taskTool?: 'builtin' | 'beads' | 'beads-rust';
+  taskTool?: TaskTool;
   /** Configuration for the selected task tool */
   taskToolConfig?: {
     /** Use beads-mcp instead of CLI */

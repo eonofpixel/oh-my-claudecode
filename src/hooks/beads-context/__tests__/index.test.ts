@@ -135,6 +135,16 @@ describe('beads-context', () => {
         priority: 'normal',
       });
     });
+
+    it('should return false for invalid taskTool value', () => {
+      mockGetSisyphusConfig.mockReturnValue({
+        silentAutoUpdate: false,
+        taskTool: 'invalid-tool' as any,
+      });
+      const result = registerBeadsContext('session-1');
+      expect(result).toBe(false);
+      expect(mockRegister).not.toHaveBeenCalled();
+    });
   });
 
   describe('clearBeadsContext', () => {
